@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% include './include/head.html' %}
-</head>
-<body>
-    <div class="wrapper">
-    {% include './include/nav.html' %}
+{% extends "base_detail.html" %}
 
-    <div class="search"></div>
+{% block search %}
+<div class="other_search"></div>
+{% endblock %}
+
+{% block content %}
     <div class="main_container">
     <table border="1">
         <tr>
@@ -23,12 +20,5 @@
             {% endfor %}
         </tr>   
     </table>
-</div>
-    <div class="goback">
-        <p><a href="{{ url_for('store.store') }}" class="button">Go Home</a></p>
-        <p><a href="{{ request.referrer }}" class="button">Back</a></p>
-
     </div>
-</div>
-</body>
-</html>
+{% endblock %}
