@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include './include/head.html' %}
+</head>
+<body>
+    <div class="wrapper">
+    {% include './include/nav.html' %}
+
+    <div class="search">
+        <div class="search_name">
+        <form action="/" method="get">
+            <label for="Name">Name: </label>
+            <input type="text" name="name" value="{{ search_name}}" >
+        </div>
+        <div class="search_gender">
+            <label for="gender">gender: </label>
+            <select name="gender" id="">
+                <option value=""></option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+            <button type="submit">검색</button>
+        </div>    
+        </form>
+    </div>
+
+    <table border="1">
+        <tr>
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+            {% for data in page_data %}
+                <tr>
+                    <td><a href="/user/{{ data['Id'] }}">{{data['Id']}}</a></td>
+
+                    {% set keys = data.keys()|list %}
+                    {% for key in keys[1:] %}
+                        <td>{{ data[key] }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %} 
+    </table>
+
+    {% include './include/pagination.html' %}
+
+</div>
+</body>
+</html>

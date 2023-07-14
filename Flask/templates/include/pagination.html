@@ -1,0 +1,27 @@
+<div class="page_num">
+    {% if total_pages < 6 %}
+        {% for num in range(1, total_pages + 1) %}
+            <a href="{{ url_for('index', name=search_name, gender=search_gender, page=num) }}" class="button">{{ num }}</a>
+        {% endfor %}
+    {% elif current_page < 6 %}
+        {% for num in range(1, 6) %} 
+            <a href="{{ url_for('index', name=search_name, gender=search_gender, page=num) }}" class="button">{{ num }}</a>
+        {% endfor %}
+        <a href="{{ url_for('index', name=search_name, gender=search_gender, page=6) }}" class="button">다음</a>
+    {% elif current_page > total_pages-6 %}
+        <a href="{{ url_for('index', name=search_name, gender=search_gender, page=1) }}" class="button">처음</a>
+        <a href="{{ url_for('index', name=search_name, gender=search_gender, page=current_page-5) }}" class="button">이전</a>
+        {% for num in range(total_pages-5, total_pages+1) %}
+            <a href="{{ url_for('index', name=search_name, gender=search_gender, page=num) }}" class="button">{{ num }}</a>
+        {% endfor %}
+    {% else %}
+        <a href="{{ url_for('index', name=search_name, gender=search_gender, page=1) }}" class="button">처음</a>
+        <a href="{{ url_for('index', name=search_name, gender=search_gender, page=current_page-5) }}" class="button">이전</a>
+        {% for num in range(current_page, current_page+5) %}
+            <a href="{{ url_for('index', name=search_name, gender=search_gender, page=num) }}" class="button">{{ num }}</a>
+        {% endfor %}
+        <a href="{{ url_for('index', name=search_name, gender=search_gender, page=current_page+5) }}" class="button">이후</a>
+        <a href="{{ url_for('index', name=search_name, gender=search_gender, page=total_pages) }}" class="button">끝</a>
+    {% endif %}
+    
+</div>
