@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block search %}
+<div class="other_search"></div>
+{% endblock %}
+
+{% block content %}
+<div class="main_container">
+    <table border="1">
+        <tr>
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        {% for data in page_data %}
+        <tr>
+            <td>{{ data['Id'] }}</td>
+            {% set keys = data.keys()|list %}
+            {% for key in keys[1:] %}
+                <td><a href="/orderitem_detail/{{ data[key] }}">{{ data[key] }}</a></td>
+            {% endfor %}
+        </tr>
+    {% endfor %} 
+    </table>
+</div>
+{% endblock %}
+   
