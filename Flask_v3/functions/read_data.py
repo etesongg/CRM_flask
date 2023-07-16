@@ -13,19 +13,19 @@ def read_csv(filename):
     
     return headers, data
 
-def read_data_db(query, search=None):
+def read_data_db(query, where=None):
     conn = sqlite3.connect('db/crm.db')
     cursor = conn.cursor()
 
-    if search:
-        cursor.execute(query, search)
+    if where:
+        cursor.execute(query, where)
     else:
         cursor.execute(query)
 
     rows = cursor.fetchall()
 
     headers = [header[0] for header in cursor.description]
-    print(headers)
+    
     data = []   
     for row in rows:
         clean_row = {}

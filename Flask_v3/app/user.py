@@ -16,7 +16,7 @@ def index():
 
     # db 읽기
     headers, data = read_data_db("SELECT * FROM user")
-
+    print(f'user :{type(data)}')
     # 검색 결과에 따른 데이터 보여주기
     filter_data = []
     for row in data:
