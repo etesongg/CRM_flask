@@ -14,7 +14,7 @@ def index():
 
     per_page = 10
 
-    # csv 파일 읽기
+    # db 읽기
     headers, data = read_data_db("SELECT * FROM user")
 
     # 검색 결과에 따른 데이터 보여주기
@@ -24,14 +24,14 @@ def index():
             if not search_gender: # search_name x, search_gender x
                 filter_data.append(row)
             else:
-                if search_gender in row['Gender']: # search_name x, search_gender o
+                if search_gender in row['gender']: # search_name x, search_gender o
                     filter_data.append(row)
         else: # search_name o
-            if search_name in row['Name']: # search_name o
+            if search_name in row['name']: # search_name o
                 if not search_gender: # search_name o, search_gender x
                     filter_data.append(row)
                 else:
-                    if search_gender in row['Gender']: # search_name o, search_gender o
+                    if search_gender in row['gender']: # search_name o, search_gender o
                         filter_data.append(row)
 
     # 페이지 계산

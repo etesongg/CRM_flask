@@ -1,5 +1,4 @@
 import sqlite3
-
 import csv
 
 def read_csv(filename):
@@ -27,7 +26,7 @@ def read_data_db(query):
     for row in rows:
         clean_row = {}
         for i, value in enumerate(row): # enumerate: 인덱스 원소 동시 접근
-            if isinstance(value, str):
+            if isinstance(value, str): # 타입 확인
                 clean_row[headers[i]] = value.strip()
             else:
                 clean_row[headers[i]] = value

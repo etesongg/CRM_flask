@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template
 
-from functions.read_data import read_csv
+from functions.read_data import read_data_db
 from functions.calc_pages import calc_pages
 
 store_bp = Blueprint('store', __name__)
@@ -11,7 +11,7 @@ def store():
 
     per_page = 10
 
-    headers, data = read_csv('csv/store.csv')
+    headers, data = read_data_db("SELECT * FROM store")
     
     total_pages, page, page_data = calc_pages(data, per_page, page)
 
@@ -19,10 +19,10 @@ def store():
 
 @store_bp.route('/store_detail/<id>')
 def store_detail(id):
-    headers, data = read_csv('csv/store.csv')
+    headers, data = read_data_db("SELECT * FROM store")
 
     for row in data:
-        if row['Id'] == id:
+        if row['id'] == id:
             user_data = row
             break
     return render_template('store_detail.html', user=user_data, headers=headers)
