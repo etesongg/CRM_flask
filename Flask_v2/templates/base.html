@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    {% endblock %}
+    <!-- <script src="{{url_for('static', filename='script.js')}}"></script> -->
+    {% endblock %}   
 </head>
 <body>
     <div class="wrapper">
@@ -13,6 +14,7 @@
     {% block nav %}
     <div>
         <nav>
+            <div class="maintain"></div>
             <ul class="main-nav">
                 <li><a href="{{ url_for('user.index') }}">user</a></li>
                 <li><a href="{{ url_for('store.store') }}">store</a></li>

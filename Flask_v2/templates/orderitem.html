@@ -15,12 +15,10 @@
         {% for data in page_data %}
         <tr>
             <td>{{ data['Id'] }}</td>
-            {% set keys = data.keys()|list %}
-            {% for key in keys[1:] %}
-                <td><a href="/orderitem_detail/{{ data[key] }}">{{ data[key] }}</a></td>
-            {% endfor %}
+            <td><a href="/order_detail/{{ data['OrderId'] }}">{{ data['OrderId'] }}</a></td>
+            <td><a href="/item_detail/{{ data['ItemId'] }}">{{ data['ItemId'] }}</a></td>
         </tr>
-    {% endfor %} 
+        {% endfor %} 
     </table>
 </div>
 {% endblock %}

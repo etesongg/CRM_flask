@@ -13,8 +13,8 @@
             {% endfor %}
         </tr>
         {% for data in page_data %}
-            <tr>
-                <td><a href="/order_datail/{{ data['Id'] }}">{{data['Id']}}</a></td>
+        <tr onclick="window.localStorage='/orderitem_datail/{{ data['Id'] }}'">
+                <td><a href="/orderitem_datail/{{ data['Id'] }}">{{data['Id']}}</a></td>
 
                 {% set keys = data.keys()|list %}
                 {% for key in keys[1:] %}

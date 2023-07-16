@@ -98,6 +98,13 @@ input {
     overflow-y: scroll;
     overflow-x: hidden;
 }
+td {
+    text-align: center;
+}
+tr:hover {
+    background-color: #F8F4EA;
+}
+
 
 
 

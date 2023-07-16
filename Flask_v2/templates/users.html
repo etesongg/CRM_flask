@@ -12,16 +12,16 @@
                 <th>{{ header }}</th>
             {% endfor %}
         </tr>
-            {% for data in page_data %}
-                <tr>
-                    <td><a href="/user_detail/{{ data['Id'] }}">{{data['Id']}}</a></td>
+        {% for data in page_data %}
+        <tr onclick="window.location='/user_detail/{{ data['Id'] }}'">
+            <td><a href="/user_detail/{{ data['Id'] }}">{{data['Id']}}</a></td>
 
-                    {% set keys = data.keys()|list %}
-                    {% for key in keys[1:] %}
-                        <td>{{ data[key] }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %} 
+            {% set keys = data.keys()|list %}
+            {% for key in keys[1:] %}
+                <td>{{ data[key] }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %} 
     </table>
     </div>
 {% endblock %}
