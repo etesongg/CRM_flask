@@ -1,0 +1,24 @@
+{% extends "base_detail.html" %}
+
+{% block search %}
+<div class="other_search"></div>
+{% endblock %}
+
+{% block content %}
+    <div class="main_container">
+    <table border="1">
+        <tr>
+            {% for header in headers[1:] %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+   
+        <tr>
+            {% set values = user.values()|list %}
+            {% for value in values[1:] %}
+                <td>{{ value }}</td>
+            {% endfor %}
+        </tr>   
+    </table>
+    </div>
+{% endblock %}
