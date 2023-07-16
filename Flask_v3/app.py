@@ -15,5 +15,9 @@ app.register_blueprint(order_bp)
 app.register_blueprint(orderitem_bp)
 app.register_blueprint(item_bp)
 
+@app.route('/<path:path>')
+def catch_all(path):
+    return f"404 - Page not found for URL: /{path}", 404
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=5003,debug=True)

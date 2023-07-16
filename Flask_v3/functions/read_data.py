@@ -13,16 +13,20 @@ def read_csv(filename):
     
     return headers, data
 
-def read_data_db(query):
+def read_data_db(query, search=None):
     conn = sqlite3.connect('db/crm.db')
     cursor = conn.cursor()
 
-    cursor.execute(query)
+    if search:
+        cursor.execute(query, search)
+    else:
+        cursor.execute(query)
+
     rows = cursor.fetchall()
 
     headers = [header[0] for header in cursor.description]
     print(headers)
-    data = []
+    data = []   
     for row in rows:
         clean_row = {}
         for i, value in enumerate(row): # enumerate: 인덱스 원소 동시 접근

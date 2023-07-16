@@ -47,4 +47,5 @@ def user_detail(id):
         if row['id'] == id:
             user_data = row
             break
+    
     return render_template('user_detail.html', user=user_data, headers=headers)
