@@ -1,3 +1,5 @@
+import sqlite3
+
 import csv
 
 def read_csv(filename):
@@ -10,4 +12,27 @@ def read_csv(filename):
             clean_row = {key.strip(): value.strip() for key, value in row.items()}
             data.append(clean_row)
     
+    return headers, data
+
+def read_data_db():
+    conn = sqlite3.connect('db/crm.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM user")
+    rows = cursor.fetchall()
+
+    headers = [header[0] for header in cursor.description]
+    print(headers)
+    data = []
+    for row in rows:
+        clean_row = {}
+        for i, value in enumerate(row):
+            if isinstance(value, str):
+                clean_row[headers[i]] = value.strip()
+            else:
+                clean_row[headers[i]] = value
+        data.append(clean_row)
+
+    conn.close()
+
     return headers, data
