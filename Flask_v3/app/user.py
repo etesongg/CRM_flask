@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template
 
-from functions.read_csv import read_data_db
+from functions.read_data import read_data_db
 from functions.calc_pages import calc_pages
 
 
@@ -15,7 +15,7 @@ def index():
     per_page = 10
 
     # csv 파일 읽기
-    headers, data = read_data_db()
+    headers, data = read_data_db("SELECT * FROM user")
 
     # 검색 결과에 따른 데이터 보여주기
     filter_data = []
@@ -41,7 +41,7 @@ def index():
 
 @user_bp.route('/user_detail/<id>')
 def user_detail(id):
-    headers, data = read_data_db()
+    headers, data = read_data_db("SELECT * FROM user")
 
     for row in data:
         if row['id'] == id:

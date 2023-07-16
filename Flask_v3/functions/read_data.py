@@ -14,11 +14,11 @@ def read_csv(filename):
     
     return headers, data
 
-def read_data_db():
+def read_data_db(query):
     conn = sqlite3.connect('db/crm.db')
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM user")
+    cursor.execute(query)
     rows = cursor.fetchall()
 
     headers = [header[0] for header in cursor.description]
@@ -26,7 +26,7 @@ def read_data_db():
     data = []
     for row in rows:
         clean_row = {}
-        for i, value in enumerate(row):
+        for i, value in enumerate(row): # enumerate: 인덱스 원소 동시 접근
             if isinstance(value, str):
                 clean_row[headers[i]] = value.strip()
             else:

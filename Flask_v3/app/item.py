@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template
-from functions.read_csv import read_csv
+from functions.read_data import read_csv
 from functions.calc_pages import calc_pages
 
 item_bp = Blueprint('item', __name__)
