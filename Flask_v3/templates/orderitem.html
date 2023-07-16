@@ -14,9 +14,9 @@
         </tr>
         {% for data in page_data %}
         <tr>
-            <td>{{ data['Id'] }}</td>
-            <td><a href="/order_detail/{{ data['OrderId'] }}">{{ data['OrderId'] }}</a></td>
-            <td><a href="/item_detail/{{ data['ItemId'] }}">{{ data['ItemId'] }}</a></td>
+            <td>{{ data.id }}</td>
+            <td><a href="/order_detail/{{ data.order_id }}">{{ data.order_id }}</a></td>
+            <td><a href="/item_detail/{{ data.item_id }}">{{ data.item_id }}</a></td>
         </tr>
         {% endfor %} 
     </table>

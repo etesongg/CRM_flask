@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template
 
-from functions.read_data import read_csv
+from functions.read_data import read_data_db
 from functions.calc_pages import calc_pages
 
 orderitem_bp = Blueprint('orderitem', __name__)
@@ -11,7 +11,7 @@ def orderitem():
 
     per_page = 10
 
-    headers, data = read_csv('csv/orderitem.csv')
+    headers, data = read_data_db('SELECT * FROM order_item')
 
     total_pages, page, page_data = calc_pages(data, per_page, page)
 
