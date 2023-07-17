@@ -27,8 +27,13 @@ def orderitem_detail(id):
     JOIN item i ON i.id = oi.item_id
     WHERE o.id = ? 
     """
-
+    
     headers, data =read_data_db(query, (id, ))
-
-    return render_template('orderitem_detail.html', data=data, headers=headers)
+  
+    for row in data:
+        if row['id'] == id:
+            # user_data = row
+            break
+    
+    return render_template('orderitem_detail.html', data=row, headers=headers)
 

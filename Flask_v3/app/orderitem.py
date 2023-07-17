@@ -27,10 +27,10 @@ def order_detail(id):
     """
 
     headers, data =read_data_db(query, (id, ))
-
+    print(data)
     for row in data:
         if row['id'] == id:
             user_data = row
             break
-
+    print(user_data)
     return render_template('order_detail.html', data=user_data, headers=headers)

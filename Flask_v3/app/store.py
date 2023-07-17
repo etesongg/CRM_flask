@@ -23,6 +23,7 @@ def store_detail(id):
 
     for row in data:
         if row['id'] == id:
-            user_data = row
+            # user_data = row
             break
-    return render_template('store_detail.html', user=user_data, headers=headers)
+
+    return render_template('store_detail.html', user=row, headers=headers)

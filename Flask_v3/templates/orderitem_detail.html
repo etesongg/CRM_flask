@@ -14,10 +14,11 @@
         </tr>
    
         <tr>
-            {% set values = data.values()|list %}
-            {% for value in values %}
-                <td>{{ data.value }}</td>
-            {% endfor %}
+
+            <td>{{ data.id }}</td>
+            <td><a href="/order_detail/{{ data.order_id }}">{{ data.order_id }}</a></td>
+            <td><a href="/item_detail/{{ data.item_id }}">{{ data.item_id }}</a></td>
+            <td>{{ data.name }}</td>
         </tr>   
     </table>
     </div>
