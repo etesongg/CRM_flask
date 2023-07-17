@@ -20,5 +20,20 @@
             {% endfor %}
         </tr>   
     </table>
+    <table>
+        월간 매출액
+        <tr>
+            {% for header in mon_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+   
+        <tr>
+            {% set values = mon_data.values()|list %}
+            {% for value in values %}
+                <td>{{ value }}</td>
+            {% endfor %}
+        </tr>   
+    </table>
     </div>
 {% endblock %}

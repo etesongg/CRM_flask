@@ -18,12 +18,10 @@ def index():
     # db 읽기 & 검색 결과에 따른 데이터 보여주기
     headers, data = dbdata.read_data_db("SELECT * FROM user WHERE name like ? AND gender like ?",('%'+search_name+'%', search_gender+'%', ))
 
-
     filter_data = []
     for row in data:
         filter_data.append(row)
         
-
     # 페이지 계산
     total_pages, page, page_data = calc_pages(filter_data, per_page, page)
 

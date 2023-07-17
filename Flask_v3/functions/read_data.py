@@ -13,12 +13,12 @@ class ReadData:
         
         return headers, data
 
-    def read_data_db(self, query, id=None):
+    def read_data_db(self, query, where=None):
         conn = sqlite3.connect('db/crm.db')
         cursor = conn.cursor()
 
-        if id:
-            cursor.execute(query, id)
+        if where:
+            cursor.execute(query, where)
         else:
             cursor.execute(query)
 

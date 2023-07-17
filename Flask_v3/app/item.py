@@ -26,5 +26,21 @@ def item_detail(id):
     for row in data:
         dict_data = row
         break
+
+    # 월간 매출액
+    query = """
+    SELECT SUBSTR(o.ordered_at, 1, 7) AS Month, sum(i.unit_price) AS TotalRevenue, count(*) AS ItemCount
+    FROM "order" o
+    JOIN order_item oi ON o.id = oi.order_id
+    JOIN item i ON oi.item_id = i.id
+    WHERE o.id = ?
+    GROUP BY Month
+    """
+    mon_headers, mon_data = dbdata.read_data_db(query, (id, ))
     
-    return render_template('item_detail.html', user=dict_data, headers=headers)
+    global dict_mon_data
+    for row in mon_data:
+        dict_mon_data = row
+        break
+    
+    return render_template('item_detail.html', user=dict_data, headers=headers, mon_headers=mon_headers, mon_data=dict_mon_data)
