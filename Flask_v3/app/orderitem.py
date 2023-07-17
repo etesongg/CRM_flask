@@ -1,9 +1,10 @@
 from flask import Blueprint, request, render_template
 
-from functions.read_data import read_data_db
+from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
 orderitem_bp = Blueprint('orderitem', __name__)
+dbdata = ReadData()
 
 @orderitem_bp.route('/orderitem/')
 def orderitem():
@@ -11,7 +12,7 @@ def orderitem():
 
     per_page = 10
 
-    headers, data = read_data_db('SELECT * FROM order_item')
+    headers, data = dbdata.read_data_db('SELECT * FROM order_item')
 
     total_pages, page, page_data = calc_pages(data, per_page, page)
 
@@ -26,7 +27,7 @@ def order_detail(id):
     WHERE oi.order_id = ? 
     """
 
-    headers, data =read_data_db(query, (id, ))
+    headers, data =dbdata.read_data_db(query, (id, ))
     global row
     for row in data:
         # dict_data = row

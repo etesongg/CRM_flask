@@ -1,10 +1,11 @@
 from flask import Blueprint, request, render_template
 
-from functions.read_data import read_data_db, make_chart
+from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
 
 user_bp = Blueprint('user', __name__)
+dbdata = ReadData()
 
 @user_bp.route('/')
 def index():
@@ -15,9 +16,17 @@ def index():
     per_page = 10
 
     # db 읽기
-    headers, data = read_data_db("SELECT * FROM user")
+    headers, data = dbdata.read_data_db("SELECT * FROM user")
     
     # 검색 결과에 따른 데이터 보여주기
+    # query = "select * from user where name like ? or gender like ?"
+
+    # headers, data = data.search_db(query, ('%'+search_name+'%', ), ('%'+search_gender+'%', ))
+
+    # filter_data = []
+    # for row in data:
+    #     filter_data.append(row)
+        
     filter_data = []
     for row in data:
         if not search_name: # search_name x
@@ -49,14 +58,14 @@ def index():
         FROM user
         GROUP BY age_group;
     """
-    rows, labels, values = make_chart(query)
+    rows, labels, values = dbdata.make_chart(query)
     
     return render_template('users.html', headers=headers, page_data=page_data, total_pages=total_pages, search_name=search_name, search_gender=search_gender, current_page=page, rows=rows, labels=labels, values=values)
 
 @user_bp.route('/user_detail/<id>')
 def user_detail(id):
     query = "SELECT * FROM user WHERE id = ?"
-    headers, data = read_data_db(query, (id, ))
+    headers, data = dbdata.read_data_db(query, (id, ))
 
     # list to dict
     global row

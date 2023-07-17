@@ -1,8 +1,10 @@
 from flask import Blueprint, request, render_template
-from functions.read_data import read_data_db
+
+from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
 item_bp = Blueprint('item', __name__)
+dbdata = ReadData()
 
 @item_bp.route('/item/')
 def item():
@@ -10,7 +12,7 @@ def item():
 
     per_page = 10
 
-    headers, data = read_data_db('SELECT * FROM item')
+    headers, data = dbdata.read_data_db('SELECT * FROM item')
 
     total_pages, page, page_data = calc_pages(data, per_page, page)
 
@@ -19,7 +21,7 @@ def item():
 @item_bp.route('/item_detail/<id>')
 def item_detail(id):
     query = "SELECT * FROM item WHERE id = ?"
-    headers, data = read_data_db(query, (id, ))
+    headers, data = dbdata.read_data_db(query, (id, ))
     
     for row in data:
         dict_data = row

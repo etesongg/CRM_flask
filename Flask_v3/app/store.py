@@ -1,9 +1,10 @@
 from flask import Blueprint, request, render_template
 
-from functions.read_data import read_data_db
+from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
 store_bp = Blueprint('store', __name__)
+dbdata = ReadData()
 
 @store_bp.route('/store/')
 def store():
@@ -11,7 +12,7 @@ def store():
 
     per_page = 10
 
-    headers, data = read_data_db("SELECT * FROM store")
+    headers, data = dbdata.read_data_db("SELECT * FROM store")
     
     total_pages, page, page_data = calc_pages(data, per_page, page)
 
@@ -20,7 +21,7 @@ def store():
 @store_bp.route('/store_detail/<id>')
 def store_detail(id):
     query = "SELECT * FROM store WHERE id = ?"
-    headers, data = read_data_db(query, (id, ))
+    headers, data = dbdata.read_data_db(query, (id, ))
 
     global row
     for row in data:
