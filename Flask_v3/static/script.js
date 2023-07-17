@@ -8,7 +8,7 @@ function Bar_Chart() {
         labels: labels ,
         datasets: [
             {
-            label: '고객 수',
+
             data: data ,
         backgroundColor: [
             'rgb(29, 91, 121)',
@@ -17,9 +17,15 @@ function Bar_Chart() {
             'rgb(243, 170, 96)',
             'rgb(74, 85, 162)',
             'rgb(255, 102, 102)'
-            ],
-            hoverOffset: 50,
+            ]
         }]
+        },
+        options: {
+            plugins:{
+                legend:{
+                    display:false
+                },
+            }
         }
     });
 }
