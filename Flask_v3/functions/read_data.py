@@ -40,27 +40,6 @@ class ReadData:
 
         return headers, data
 
-    def search_db(self, query, where1=None, where2=None):
-        conn = sqlite3.connect('db/crm.db')
-        cursor = conn.cursor()
-        cursor.execute(query, where1, where2)
-        rows = cursor.fetchall()
-
-        headers = [header[0] for header in cursor.description]
-        
-        data = []   
-        for row in rows:
-            clean_row = {}
-            for i, value in enumerate(row):
-                if isinstance(value, str):
-                    clean_row[headers[i]] = value.strip()
-                else:
-                    clean_row[headers[i]] = value
-            data.append(clean_row)
-
-        conn.close()
-
-        return headers, data
 
     def make_chart(self, query):
         conn = sqlite3.connect('db/crm.db')

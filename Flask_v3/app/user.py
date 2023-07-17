@@ -15,33 +15,14 @@ def index():
 
     per_page = 10
 
-    # db 읽기
-    headers, data = dbdata.read_data_db("SELECT * FROM user")
-    
-    # 검색 결과에 따른 데이터 보여주기
-    # query = "select * from user where name like ? or gender like ?"
+    # db 읽기 & 검색 결과에 따른 데이터 보여주기
+    headers, data = dbdata.read_data_db("SELECT * FROM user WHERE name like ? AND gender like ?",('%'+search_name+'%', search_gender+'%', ))
 
-    # headers, data = data.search_db(query, ('%'+search_name+'%', ), ('%'+search_gender+'%', ))
 
-    # filter_data = []
-    # for row in data:
-    #     filter_data.append(row)
-        
     filter_data = []
     for row in data:
-        if not search_name: # search_name x
-            if not search_gender: # search_name x, search_gender x
-                filter_data.append(row)
-            else:
-                if search_gender in row['gender']: # search_name x, search_gender o
-                    filter_data.append(row)
-        else: # search_name o
-            if search_name in row['name']: # search_name o
-                if not search_gender: # search_name o, search_gender x
-                    filter_data.append(row)
-                else:
-                    if search_gender in row['gender']: # search_name o, search_gender o
-                        filter_data.append(row)
+        filter_data.append(row)
+        
 
     # 페이지 계산
     total_pages, page, page_data = calc_pages(filter_data, per_page, page)
