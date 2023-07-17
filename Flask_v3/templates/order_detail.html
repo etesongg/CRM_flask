@@ -14,8 +14,12 @@
         </tr>
    
         <tr>
-            {% for i in data %}
-                <td>{{ i }}</td>
+            {% set keys = data.keys()|list %}
+            {% for key in keys %}
+                <td>{{ data[key] }}</td>
+                <!-- {% if data[key] == data.ordered_at %}
+                <td>{{ data.ordered_at[:19] }}</td>
+                {% endif %} -->
             {% endfor %}
         </tr>   
     </table>

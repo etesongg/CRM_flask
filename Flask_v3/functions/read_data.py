@@ -29,8 +29,8 @@ def read_data_db(query, where=None):
     data = []   
     for row in rows:
         clean_row = {}
-        for i, value in enumerate(row): # enumerate: 인덱스 원소 동시 접근
-            if isinstance(value, str): # 타입 확인
+        for i, value in enumerate(row):
+            if isinstance(value, str):
                 clean_row[headers[i]] = value.strip()
             else:
                 clean_row[headers[i]] = value
@@ -39,3 +39,5 @@ def read_data_db(query, where=None):
     conn.close()
 
     return headers, data
+
+
