@@ -29,11 +29,10 @@ def orderitem_detail(id):
     """
     
     headers, data =read_data_db(query, (id, ))
-  
+    global row
     for row in data:
-        if row['id'] == id:
-            # user_data = row
-            break
+        # dict_data = row
+        break
     
     return render_template('orderitem_detail.html', data=row, headers=headers)
 

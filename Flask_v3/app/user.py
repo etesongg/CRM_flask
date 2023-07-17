@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template
 
-from functions.read_data import read_data_db, make_graph
+from functions.read_data import read_data_db, make_chart
 from functions.calc_pages import calc_pages
 
 
@@ -49,17 +49,20 @@ def index():
         FROM user
         GROUP BY age_group;
     """
-    rows, labels, values = make_graph(query)
+    rows, labels, values = make_chart(query)
     
     return render_template('users.html', headers=headers, page_data=page_data, total_pages=total_pages, search_name=search_name, search_gender=search_gender, current_page=page, rows=rows, labels=labels, values=values)
 
 @user_bp.route('/user_detail/<id>')
 def user_detail(id):
-    headers, data = read_data_db("SELECT * FROM user")
+    query = "SELECT * FROM user WHERE id = ?"
+    headers, data = read_data_db(query, (id, ))
 
+    # list to dict
+    global row
     for row in data:
         if row['id'] == id:
-            # user_data = row
+            # dict_data = row
             break
-    
+        
     return render_template('user_detail.html', user=row, headers=headers)

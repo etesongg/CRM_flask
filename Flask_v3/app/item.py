@@ -18,10 +18,11 @@ def item():
 
 @item_bp.route('/item_detail/<id>')
 def item_detail(id):
-    headers, data = read_data_db('SELECT * FROM item')
-    for row in data:
-        if row['id'] == id:
-            user_data = row
-            break
+    query = "SELECT * FROM item WHERE id = ?"
+    headers, data = read_data_db(query, (id, ))
     
-    return render_template('item_detail.html', user=user_data, headers=headers)
+    for row in data:
+        dict_data = row
+        break
+    
+    return render_template('item_detail.html', user=dict_data, headers=headers)

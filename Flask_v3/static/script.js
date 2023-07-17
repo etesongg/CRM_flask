@@ -1,9 +1,9 @@
 const ctx = document.getElementById('revenue_Chart');
     
 
-function Pie_Chart() {
+function Bar_Chart() {
     new Chart(ctx, {
-        type: 'pie',
+        type: 'bar',
         data: {
         labels: labels ,
         datasets: [
@@ -23,5 +23,5 @@ function Pie_Chart() {
         }
     });
 }
-Pie_Chart()
+Bar_Chart()
     

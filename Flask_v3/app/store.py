@@ -19,11 +19,13 @@ def store():
 
 @store_bp.route('/store_detail/<id>')
 def store_detail(id):
-    headers, data = read_data_db("SELECT * FROM store")
+    query = "SELECT * FROM store WHERE id = ?"
+    headers, data = read_data_db(query, (id, ))
 
+    global row
     for row in data:
         if row['id'] == id:
-            # user_data = row
+            # dict_data = row
             break
 
     return render_template('store_detail.html', user=row, headers=headers)

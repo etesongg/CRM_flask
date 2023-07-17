@@ -40,7 +40,7 @@ def read_data_db(query, where=None):
 
     return headers, data
 
-def make_graph(query):
+def make_chart(query):
     conn = sqlite3.connect('db/crm.db')
     cursor = conn.cursor()
     cursor.execute(query)
