@@ -29,31 +29,8 @@
         <canvas id="revenue_Chart"></canvas>
     </div>
     <script> 
-    const ctx = document.getElementById('revenue_Chart');
-    Pie_Chart()
-
-        function Pie_Chart() {
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                labels: {{ labels | tojson }} ,
-                datasets: [
-                    {
-                    label: '고객 수',
-                    data: {{ values | tojson }} ,
-                backgroundColor: [
-                    'rgb(29, 91, 121)',
-                    'rgb(70, 139, 151)',
-                    'rgb(239, 98, 98)',
-                    'rgb(243, 170, 96)',
-                    'rgb(74, 85, 162)',
-                    'rgb(255, 102, 102)'
-                    ],
-                    hoverOffset: 50,
-                }]
-                }
-            });
-        }
+    const labels = {{ labels | tojson }}; 
+    const data = {{ values | tojson }};        
     </script>
 </div>
 {% endblock %}
