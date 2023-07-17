@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
-{% block search %}
-{{ super() }}
-{% endblock %}
-
 {% block content %}
 <div class="main_container">
     <table border="1">
@@ -23,5 +19,42 @@
         {% endfor %} 
     </table>
     </div>
+{% endblock %}
+
+{% block graph %}
+<div class="wrapper graph">
+    <h1>연령대별 고객 수</h1>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div>
+        <canvas id="revenue_Chart"></canvas>
+    </div>
+    <script> 
+    const ctx = document.getElementById('revenue_Chart');
+    Pie_Chart()
+
+        function Pie_Chart() {
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                labels: {{ labels | tojson }} ,
+                datasets: [
+                    {
+                    label: '고객 수',
+                    data: {{ values | tojson }} ,
+                backgroundColor: [
+                    'rgb(29, 91, 121)',
+                    'rgb(70, 139, 151)',
+                    'rgb(239, 98, 98)',
+                    'rgb(243, 170, 96)',
+                    'rgb(74, 85, 162)',
+                    'rgb(255, 102, 102)'
+                    ],
+                    hoverOffset: 50,
+                }]
+                }
+            });
+        }
+    </script>
+</div>
 {% endblock %}
 

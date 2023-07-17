@@ -40,4 +40,21 @@ def read_data_db(query, where=None):
 
     return headers, data
 
+def make_graph(query):
+    conn = sqlite3.connect('db/crm.db')
+    cursor = conn.cursor()
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    conn.close()
+
+    labels = []
+    values = []
+
+    for row in rows:
+        lable, value = row
+        labels.append(lable)
+        values.append(value)
+
+    return rows, labels, values
+
 

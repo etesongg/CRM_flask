@@ -104,6 +104,12 @@ td {
 tr:hover {
     background-color: #F8F4EA;
 }
+.graph {
+    width: 1000px;
+    height: 450px;
+    padding-top: 50px;
+}
+
 
 
 
