@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="main_container">
+    <div>
     <table border="1">
         <tr>
             {% for header in headers[1:] %}
@@ -20,7 +20,29 @@
             {% endfor %}
         </tr>   
     </table>
+
+    <div class="detail_name">주문 정보</div>
+    <div class="detail_container">
+    <table>
+        <tr>
+            {% for header in order_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+
+        {% for data in order_data %}
+        <tr>
+            <td><a href="/orderitem_detail/{{ data.OrderId }}">{{ data.OrderId }}</a></td>
+            <td>{{ data.PurchasedDate }}</td>
+            <td><a href="/store_detail/{{ data.PurchsedLocation }}">{{ data.PurchsedLocation }}</a></td>
+        </tr> 
+        {% endfor %}  
+
+    </table>
+    </div>
     </div>
 {% endblock %}
+
+
 
 

@@ -38,11 +38,15 @@ function mixed_Chart() {
                 type: 'bar',
                 label: 'TotalRevenue',
                 data: data,
+                borderColor: 'rgb(58, 166, 185)',
+                backgroundColor: 'rgba(58, 166, 185 ,0.4)',
                 yAxisID: 'y1'
             }, {
                 type: 'line',
                 label: 'ItemCount',
                 data: data2,
+                borderColor: 'rgb(255, 158, 170)',
+                backgroundColor: 'rgba(255, 158, 170,0.2)',
                 yAxisID: 'y2'
             }],
             labels: labels

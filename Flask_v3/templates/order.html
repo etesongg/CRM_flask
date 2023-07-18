@@ -9,7 +9,7 @@
             {% endfor %}
         </tr>
         {% for data in page_data %}
-        <tr onclick="window.location='/orderitem_datail/{{ data.id }}'">
+        <tr onclick="window.location='/orderitem_detail/{{ data.id }}'">
                 {% set keys = data.keys()|list %}
                 <td><a href="/orderitem_detail/{{ data.id }}">{{ data.id }}</a></td>
                 <td>{{ data.ordered_at }}</td>

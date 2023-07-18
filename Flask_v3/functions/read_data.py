@@ -16,9 +16,9 @@ class ReadData:
     # HugeCrm.db            crm.db
     # user 1000             user 1000
     # store 100             store 1000
-    # order 10000           order 10000
-    # item 30               item 50
-    # order item 10000      order item 15000
+    # order 3000            order 10000
+    # item 40               item 50
+    # order item 12000      order item 15000
     def read_data_db(self, query, where=None):
         conn = sqlite3.connect('db/crm.db')
         conn.row_factory = sqlite3.Row # dict로 row 바로 받기 
@@ -28,7 +28,7 @@ class ReadData:
             cursor.execute(query, where)
         else:
             cursor.execute(query)
-
+        
         datas = [dict(element) for element in cursor.fetchall()]
         headers = [header for header in datas[0]]
         # print(datas)

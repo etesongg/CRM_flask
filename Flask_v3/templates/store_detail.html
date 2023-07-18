@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="main_container">
+    <div>
     <table border="1">
         <tr>
             {% for header in headers[1:] %}
@@ -20,5 +20,25 @@
             {% endfor %}
         </tr>   
     </table>
+    <div class="detail_name">월간 매출액</div>
+    <div class="detail_container">
+    <table>
+        <tr>
+            {% for header in month_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+
+        {% for d in month_data %}
+        <tr>
+            {% set keys = d.keys()|list %}
+            {% for key in keys %}
+                <td>{{ d[key] }}</td>
+            {% endfor %} 
+        </tr> 
+        {% endfor %}  
+
+    </table>
+    </div>
     </div>
 {% endblock %}

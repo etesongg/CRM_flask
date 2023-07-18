@@ -36,9 +36,9 @@ def item_detail(id):
     WHERE i.id = ?
     GROUP BY Month
     """
-    mon_headers, mon_data = dbdata.read_data_db(query, (id, ))
+    month_headers, month_data = dbdata.read_data_db(query, (id, ))
 
     # 그래프
     rows, lables, values, values2 = dbdata.make_mixchart(query, (id, )) # row = ('2022-03', 7000, 2)
 
-    return render_template('item_detail.html', user=row, headers=headers, mon_headers=mon_headers, mon_data=mon_data, rows=rows, labels=lables, values=values, values2=values2)
+    return render_template('item_detail.html', user=row, headers=headers, month_headers=month_headers, month_data=month_data, rows=rows, labels=lables, values=values, values2=values2)

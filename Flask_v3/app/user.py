@@ -45,5 +45,15 @@ def user_detail(id):
 
     # type(datas) : list
     row = datas[0]
+
+    # 주문 정보
+    query = """
+    SELECT o.id AS OrderId, o.ordered_at AS PurchasedDate, o.store_id AS PurchsedLocation
+    FROM user u 
+    JOIN 'order' o ON u.id = o.user_id
+    JOIN store s ON o.store_id = s.id
+    WHERE u.id = ?
+    """
+    order_headers, order_data = dbdata.read_data_db(query, (id, ))
         
-    return render_template('user_detail.html', data=row, headers=headers)
+    return render_template('user_detail.html', data=row, headers=headers, order_headers=order_headers, order_data=order_data)

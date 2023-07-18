@@ -26,4 +26,17 @@ def store_detail(id):
 
     row = datas[0]
 
-    return render_template('store_detail.html', user=row, headers=headers)
+    # 월간 매출액
+    query = """
+    SELECT SUBSTR(o.ordered_at, 1, 7) AS Month, sum(i.unit_price) AS Revenue, count(*) AS Count
+    FROM store s
+    JOIN 'order' o ON s.id = o.store_id
+    JOIN order_item oi ON o.id = oi.order_id
+    JOIN item i ON oi.item_id = i.id
+    WHERE s.id = ?
+    GROUP BY Month
+    """
+
+    month_headers, month_data = dbdata.read_data_db(query, (id, ))
+
+    return render_template('store_detail.html', user=row, headers=headers, month_headers=month_headers, month_data=month_data)

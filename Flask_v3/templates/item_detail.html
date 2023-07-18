@@ -21,16 +21,16 @@
         </tr>   
     </table>
 
-    월간 매출액
+    <div class="detail_name">월간 매출액</div>
     <div class="detail_container">
     <table>
         <tr>
-            {% for header in mon_headers %}
+            {% for header in month_headers %}
                 <th>{{ header }}</th>
             {% endfor %}
         </tr>
 
-        {% for d in mon_data %}
+        {% for d in month_data %}
         <tr>
             {% set keys = d.keys()|list %}
             {% for key in keys %}
@@ -44,9 +44,9 @@
     </div>
 {% endblock %}
 
-{% block graph %}
-<div class="wrapper graph">
-    월별 매출액 그래프
+{% block chart %}
+<div class="wrapper chart">
+    월별 매출액 차트
     <div>
         <canvas id="MonthlySales_Chart"></canvas>
     </div>
