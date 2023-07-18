@@ -27,13 +27,16 @@
                 <th>{{ header }}</th>
             {% endfor %}
         </tr>
-   
-        <tr>
-            {% set values = mon_data.values()|list %}
-            {% for value in values %}
-                <td>{{ value }}</td>
-            {% endfor %}
-        </tr>   
+            {% for d in mon_data %}
+            <tr>
+                
+                {% set keys = d.keys()|list %}
+                {% for key in keys %}
+                    <td>{{ d[key] }}</td>
+                {% endfor %}
+                
+            </tr> 
+            {% endfor %}  
     </table>
     </div>
 {% endblock %}

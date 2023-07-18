@@ -47,7 +47,7 @@ def user_detail(id):
     headers, data = dbdata.read_data_db(query, (id, ))
 
     # list to dict
-    global row
+    # glosbal row
     for row in data:
         if row['id'] == id:
             # dict_data = row

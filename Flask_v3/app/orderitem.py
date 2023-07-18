@@ -18,19 +18,22 @@ def orderitem():
 
     return render_template('orderitem.html', headers=headers, page_data=page_data, total_pages=total_pages, current_page=page)
 
-@orderitem_bp.route('/order_detail/<id>')
-def order_detail(id):
+@orderitem_bp.route('/orderitem_detail/<id>')
+def orderitem_detail(id):
+    
     query = """
-    SELECT o.*
+    SELECT oi.*, i.name
     FROM order_item oi
     JOIN 'order' o ON o.id = oi.order_id
-    WHERE oi.order_id = ? 
+    JOIN item i ON i.id = oi.item_id
+    WHERE o.id = ? 
     """
-
+    
     headers, data =dbdata.read_data_db(query, (id, ))
-    global row
+    # global row
     for row in data:
         # dict_data = row
         break
+    
+    return render_template('orderitem_detail.html', data=row, headers=headers)
 
-    return render_template('order_detail.html', data=row, headers=headers)
