@@ -37,15 +37,40 @@ function mixed_Chart() {
             datasets: [{
                 type: 'bar',
                 label: 'TotalRevenue',
-                data: data
+                data: data,
+                yAxisID: 'y1'
             }, {
                 type: 'line',
                 label: 'ItemCount',
                 data: data2,
+                yAxisID: 'y2'
             }],
             labels: labels
+        },
+        options: {
+            scales: {
+                y1: {
+                    position: 'left',
+                    ticks: {
+                        callback: function(value, index, ticks) {
+                            return `${value.toLocaleString()}원`;
+                        }
+                    }
+                },
+                y2: {
+                    beginAtZero: true,
+                    position: 'right',
+                    grid: {
+                        drawOnChartArea: false,
+                    },
+                    ticks: {
+                        callback: function(value, index, ticks) {
+                            return `${value.toLocaleString()}개`;
+                        }
+                    }
+                }
+            }
         }
-
     });
 }
 mixed_Chart()
