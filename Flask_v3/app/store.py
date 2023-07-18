@@ -12,9 +12,9 @@ def store():
 
     per_page = 10
 
-    headers, data = dbdata.read_data_db("SELECT * FROM store")
+    headers, datas = dbdata.read_data_db("SELECT * FROM store")
     
-    total_pages, page, page_data = calc_pages(data, per_page, page)
+    total_pages, page, page_data = calc_pages(datas, per_page, page)
 
     return render_template('store.html', headers=headers, page_data=page_data, total_pages=total_pages, current_page=page)
 
@@ -24,7 +24,6 @@ def store_detail(id):
     query = "SELECT * FROM store WHERE id = ?"
     headers, datas = dbdata.read_data_db(query, (id, ))
 
-    print(datas)
     row = datas[0]
 
     return render_template('store_detail.html', user=row, headers=headers)

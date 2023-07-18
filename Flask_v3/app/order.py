@@ -12,9 +12,9 @@ def order():
 
     per_page = 10
 
-    headers, data = dbdata.read_data_db("SELECT * FROM 'order'")
+    headers, datas = dbdata.read_data_db("SELECT * FROM 'order'")
 
-    total_pages, page, page_data = calc_pages(data, per_page, page)
+    total_pages, page, page_data = calc_pages(datas, per_page, page)
 
     return render_template('order.html', headers=headers, page_data=page_data, total_pages=total_pages, current_page=page)
 
@@ -27,11 +27,9 @@ def order_detail(id):
     WHERE oi.order_id = ? 
     """
 
-    headers, data =dbdata.read_data_db(query, (id, ))
+    headers, datas =dbdata.read_data_db(query, (id, ))
 
-    for row in data:
-        # dict_data = row
-        break
+    row = datas[0]
 
     return render_template('order_detail.html', data=row, headers=headers)
 

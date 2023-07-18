@@ -12,7 +12,7 @@
         <tr onclick="window.location='/orderitem_datail/{{ data.id }}'">
                 {% set keys = data.keys()|list %}
                 <td><a href="/orderitem_detail/{{ data.id }}">{{ data.id }}</a></td>
-                <td>{{ data.ordered_at[:19] }}</td>
+                <td>{{ data.ordered_at }}</td>
                 {% for key in keys[2:] %}
                     <td>{{ data[key] }}</td>
                 {% endfor %}
