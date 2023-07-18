@@ -16,14 +16,11 @@ def index():
     per_page = 10
 
     # db 읽기 & 검색 결과에 따른 데이터 보여주기
-    headers, data = dbdata.read_data_db("SELECT * FROM user WHERE name like ? AND gender like ?",('%'+search_name+'%', search_gender+'%', ))
-
-    filter_data = []
-    for row in data:
-        filter_data.append(row)
+    query = "SELECT * FROM user WHERE name like ? AND gender like ?"
+    headers, datas = dbdata.read_data_db(query,('%'+search_name+'%', search_gender+'%', ))
         
     # 페이지 계산
-    total_pages, page, page_data = calc_pages(filter_data, per_page, page)
+    total_pages, page, page_data = calc_pages(datas, per_page, page)
 
     # 그래프
     query = """
@@ -44,13 +41,9 @@ def index():
 @user_bp.route('/user_detail/<id>')
 def user_detail(id):
     query = "SELECT * FROM user WHERE id = ?"
-    headers, data = dbdata.read_data_db(query, (id, ))
+    headers, datas = dbdata.read_data_db(query, (id, ))
 
-    # list to dict
-
-    for row in data:        
-        # if row['id'] == id:
-            # dict_data = row
-        break
+    # type(datas) : list
+    row = datas[0]
         
     return render_template('user_detail.html', data=row, headers=headers)
