@@ -44,9 +44,8 @@
 {% block graph %}
 <div class="wrapper graph">
     <h1>연령대별 고객 수</h1>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <div>
-        <canvas id="revenue_Chart"></canvas>
+        <canvas id="AgeGroup_Chart"></canvas>
     </div>
     <script> 
     const labels = {{ labels | tojson }}; 

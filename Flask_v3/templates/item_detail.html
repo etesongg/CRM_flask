@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="main_container">
+    <div>
     <table border="1">
         <tr>
             {% for header in headers[2:] %}
@@ -20,23 +20,42 @@
             {% endfor %}
         </tr>   
     </table>
+
+    월간 매출액
+    <div class="detail_container">
     <table>
-        월간 매출액
         <tr>
             {% for header in mon_headers %}
                 <th>{{ header }}</th>
             {% endfor %}
         </tr>
-            {% for d in mon_data %}
-            <tr>
-                
-                {% set keys = d.keys()|list %}
-                {% for key in keys %}
-                    <td>{{ d[key] }}</td>
-                {% endfor %}
-                
-            </tr> 
-            {% endfor %}  
+
+        {% for d in mon_data %}
+        <tr>
+            {% set keys = d.keys()|list %}
+            {% for key in keys %}
+                <td>{{ d[key] }}</td>
+            {% endfor %} 
+        </tr> 
+        {% endfor %}  
+
     </table>
     </div>
+    </div>
+{% endblock %}
+
+{% block graph %}
+<div class="wrapper graph">
+    월별 매출액 그래프
+    <div>
+        <canvas id="MonthlySales_Chart"></canvas>
+    </div>
+    <script> 
+    const labels = {{ labels | tojson }}; 
+    const data = {{ values | tojson }};
+    const data2 = {{ values2 | tojson }};        
+    </script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script defer src="{{url_for('static', filename='script.js')}}"></script>
 {% endblock %}

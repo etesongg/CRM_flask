@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Blueprint, request, render_template
 
 from functions.read_data import ReadData
@@ -37,13 +39,16 @@ def item_detail(id):
     GROUP BY Month
     """
     mon_headers, mon_data = dbdata.read_data_db(query, (id, ))
-    print(mon_data)
-    print(type(mon_data))
-    for d in mon_data:
-        print(d)
+    # print(mon_data)
+    # print(type(mon_data))
+    # for d in mon_data:
+    #     print(d)
 
     # for row in mon_data:
     #     dict_mon_data = row
         
     # print(row)
-    return render_template('item_detail.html', user=dict_data, headers=headers, mon_headers=mon_headers, mon_data=mon_data)
+    # 그래프
+    rows, lables, values, values2 = dbdata.make_mixchart(query, (id, )) # ('2022-03', 7000, 2)
+
+    return render_template('item_detail.html', user=dict_data, headers=headers, mon_headers=mon_headers, mon_data=mon_data, rows=rows, labels=lables, values=values, values2=values2)

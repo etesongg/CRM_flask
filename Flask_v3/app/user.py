@@ -48,7 +48,7 @@ def user_detail(id):
 
     # list to dict
     # glosbal row
-    for row in data:
+    for row in data:        
         if row['id'] == id:
             # dict_data = row
             break

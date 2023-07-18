@@ -98,6 +98,11 @@ input {
     overflow-y: scroll;
     overflow-x: hidden;
 }
+.detail_container {
+    height: 420px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 td {
     text-align: center;
 }

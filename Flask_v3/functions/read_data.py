@@ -41,10 +41,13 @@ class ReadData:
         return headers, data
 
 
-    def make_chart(self, query):
+    def make_chart(self, query, where=None):
         conn = sqlite3.connect('db/crm.db')
         cursor = conn.cursor()
-        cursor.execute(query)
+        if where:
+            cursor.execute(query, where)
+        else:
+            cursor.execute(query)
         rows = cursor.fetchall()
         conn.close()
 
@@ -57,5 +60,25 @@ class ReadData:
             values.append(value)
 
         return rows, labels, values
+    
+    def make_mixchart(self, query, where=None):
+        conn = sqlite3.connect('db/crm.db')
+        cursor = conn.cursor()
+        if where:
+            cursor.execute(query, where)
+        else:
+            cursor.execute(query)
+        rows = cursor.fetchall()
+        conn.close()
 
+        labels = []
+        values = []
+        values2 = []
+        # ('2022-03', 7000, 2)
+        for row in rows:
+            lable, value, value2 = row
+            labels.append(lable)
+            values.append(value)
+            values2.append(value2)
 
+        return rows, labels, values, values2
