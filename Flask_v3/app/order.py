@@ -28,7 +28,7 @@ def order_detail(id):
     """
 
     headers, data =dbdata.read_data_db(query, (id, ))
-    global row
+
     for row in data:
         # dict_data = row
         break

@@ -47,10 +47,10 @@ def user_detail(id):
     headers, data = dbdata.read_data_db(query, (id, ))
 
     # list to dict
-    # glosbal row
+
     for row in data:        
-        if row['id'] == id:
+        # if row['id'] == id:
             # dict_data = row
-            break
+        break
         
-    return render_template('user_detail.html', user=row, headers=headers)
+    return render_template('user_detail.html', data=row, headers=headers)

@@ -64,6 +64,7 @@ function mixed_Chart() {
                         drawOnChartArea: false,
                     },
                     ticks: {
+                        stepSize:1,
                         callback: function(value, index, ticks) {
                             return `${value.toLocaleString()}개`;
                         }

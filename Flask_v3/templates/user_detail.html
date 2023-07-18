@@ -14,7 +14,7 @@
         </tr>
    
         <tr>
-            {% set values = user.values()|list %}
+            {% set values = data.values()|list %}
             {% for value in values[1:] %}
                 <td>{{ value }}</td>
             {% endfor %}
