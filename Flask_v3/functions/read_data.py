@@ -20,7 +20,7 @@ class ReadData:
     # item 40               item 50
     # order item 12000      order item 15000
     def read_data_db(self, query, where=None):
-        conn = sqlite3.connect('db/crm.db')
+        conn = sqlite3.connect('db/HugeCrm.db')
         conn.row_factory = sqlite3.Row # dict로 row 바로 받기 
         cursor = conn.cursor()
 
@@ -39,7 +39,7 @@ class ReadData:
 
 
     def make_chart(self, query, where=None):
-        conn = sqlite3.connect('db/crm.db')
+        conn = sqlite3.connect('db/HugeCrm.db')
         cursor = conn.cursor()
         if where:
             cursor.execute(query, where)
@@ -59,7 +59,7 @@ class ReadData:
         return rows, labels, values
     
     def make_mixchart(self, query, where=None):
-        conn = sqlite3.connect('db/crm.db')
+        conn = sqlite3.connect('db/HugeCrm.db')
         cursor = conn.cursor()
         if where:
             cursor.execute(query, where)

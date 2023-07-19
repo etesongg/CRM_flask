@@ -31,7 +31,7 @@ def orderitem_detail(id):
     
     headers, datas =dbdata.read_data_db(query, (id, ))
     
-    row = datas[0] # user_detail > orderid로 들어갔을때 0개로 가져오면 안 될듯...
+    # row = datas[0] # user_detail > orderid로 들어갔을때 0개로 가져오면 안 될듯...
     
-    return render_template('orderitem_detail.html', data=row, headers=headers)
+    return render_template('orderitem_detail.html', data=datas, headers=headers)
 

@@ -40,14 +40,15 @@ def index():
 
 @user_bp.route('/user_detail/<id>')
 def user_detail(id):
+    print(id)
     query = "SELECT * FROM user WHERE id = ?"
     headers, datas = dbdata.read_data_db(query, (id, ))
-
+    print(datas)
     # type(datas) : list
     row = datas[0]
 
     # 주문 정보
-    query = """
+    query = """ 
     SELECT o.id AS OrderId, o.ordered_at AS PurchasedDate, o.store_id AS PurchsedLocation
     FROM user u 
     JOIN 'order' o ON u.id = o.user_id

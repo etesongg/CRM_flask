@@ -12,13 +12,15 @@
                 <th>{{ header }}</th>
             {% endfor %}
         </tr>
-   
+        
+        {% for d in data %}
         <tr>
-            <td>{{ data.id }}</td>
-            <td><a href="/order_detail/{{ data.order_id }}">{{ data.order_id }}</a></td>
-            <td><a href="/item_detail/{{ data.item_id }}">{{ data.item_id }}</a></td>
-            <td>{{ data.name }}</td>
-        </tr>   
+            <td>{{ d.id }}</td>
+            <td><a href="/order_detail/{{ d.order_id }}">{{ d.order_id }}</a></td>
+            <td><a href="/item_detail/{{ d.item_id }}">{{ d.item_id }}</a></td>
+            <td>{{ d.name }}</td>
+        </tr> 
+        {% endfor %}  
     </table>
     </div>
 
