@@ -54,6 +54,7 @@ def user_detail(id):
     JOIN 'order' o ON u.id = o.user_id
     JOIN store s ON o.store_id = s.id
     WHERE u.id = ?
+    ORDER BY PurchasedDate DESC
     """
     order_headers, order_data = dbdata.read_data_db(query, (id, ))
         

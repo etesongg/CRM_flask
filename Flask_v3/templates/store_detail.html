@@ -37,8 +37,27 @@
             {% endfor %} 
         </tr> 
         {% endfor %}  
-
     </table>
+
+    <div class="detail_name">단골 고객</div>
+    <div >
+        <table>
+            <tr>
+                {% for header in freq_headers %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+    
+            {% for data in freq_data %}
+            <tr>
+                <td><a href="/user_detail/{{ data.user_id }}">{{ data.user_id }}</a></td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.frequency }}</td>
+
+            </tr> 
+            {% endfor %}  
+        </table>
     </div>
+
     </div>
 {% endblock %}

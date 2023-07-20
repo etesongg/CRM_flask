@@ -113,8 +113,8 @@ tr:hover {
 .detail_name {
     padding-top: 20px;
 }
-.detail_container td {
-    text-align: center;
+.detail_container th {
+    text-align: left;
 }
 
 

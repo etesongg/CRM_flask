@@ -39,4 +39,17 @@ def store_detail(id):
 
     month_headers, month_data = dbdata.read_data_db(query, (id, ))
 
-    return render_template('store_detail.html', user=row, headers=headers, month_headers=month_headers, month_data=month_data)
+    # 단골고객
+    query = """
+    SELECT u.id AS user_id, u.name AS name, count(*) AS frequency
+    FROM store s
+    JOIN 'order' o ON s.id = o.store_id
+    JOIN user u ON o.user_id = u.id
+    WHERE s.id = ?
+    GROUP BY user_id
+    limit 10
+    """
+
+    freq_headers, freq_data = dbdata.read_data_db(query, (id, ))
+
+    return render_template('store_detail.html', user=row, headers=headers, month_headers=month_headers, month_data=month_data, freq_headers=freq_headers, freq_data=freq_data)
