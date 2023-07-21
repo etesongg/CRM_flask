@@ -19,6 +19,8 @@ class ReadData:
     # order 3000            order 10000
     # item 40               item 50
     # order item 12000      order item 15000
+    
+    # user u, store s, orders o, orderitem oi, item i
     def read_data_db(self, query, where=None):
         conn = sqlite3.connect('db/HugeCrm.db')
         conn.row_factory = sqlite3.Row # dict로 row 바로 받기 

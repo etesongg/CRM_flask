@@ -116,6 +116,7 @@ tr:hover {
 .detail_container th {
     text-align: left;
 }
+#map { height: 180px; }
 
 
 

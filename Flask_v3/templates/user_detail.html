@@ -39,6 +39,19 @@
         {% endfor %}  
 
     </table>
+        <div class="detail_name">자주 방문한 매장 Top 5</div>
+        <ul>
+            {% for visit_store in visit_stores %}
+            <li>{{visit_store.name}} ({{visit_store.count}}번 방문)</li>
+            {% endfor %}
+        </ul>
+
+        <div class="detail_name">자주 주문한 상품명 Top 5</div>
+        <ul>
+            {% for order_item in order_items %}
+            <li>{{order_item.name}} ({{order_item.count}}번 주문)</li>
+            {% endfor %}
+        </ul>
     </div>
     </div>
 {% endblock %}

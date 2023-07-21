@@ -60,5 +60,33 @@ def user_detail(id):
     ORDER BY PurchasedDate DESC
     """
     order_headers, order_data = dbdata.read_data_db(query, (id, ))
-        
-    return render_template('user_detail.html', data=row, headers=headers, order_headers=order_headers, order_data=order_data)
+
+    # 자주 방문한 매장 Top 5
+    query = """
+    SELECT s.name AS name, count(*) AS count
+    FROM user u
+    JOIN 'order' o ON o.user_id = u.id
+    JOIN store s ON s.id = o.store_id
+    WHERE u.id = ?
+    GROUP BY s.name
+    ORDER BY count
+    limit 5
+    """
+    _, visit_stores = dbdata.read_data_db(query, (id, ))
+
+    # 자주 주문한 상품명 Top 5
+    query = """
+    SELECT i.name AS name, count(*) AS count
+    FROM user u
+    JOIN 'order' o ON o.user_id = u.id
+    JOIN store s ON s.id = o.store_id
+    JOIN order_item oi ON o.id = oi.order_id
+    JOIN item i ON oi.item_id = i.id
+    WHERE u.id = ?
+    GROUP BY i.name
+    ORDER BY count
+    limit 5
+    """
+    _, order_items = dbdata.read_data_db(query, (id, ))
+ 
+    return render_template('user_detail.html', data=row, headers=headers, order_headers=order_headers, order_data=order_data, visit_stores=visit_stores, order_items=order_items)

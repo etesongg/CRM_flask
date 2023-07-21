@@ -13,8 +13,9 @@ def store():
     per_page = 10
 
     headers, datas = dbdata.read_data_db("SELECT * FROM store")
-    
+
     total_pages, page, page_data = calc_pages(datas, per_page, page)
+
 
     return render_template('store.html', headers=headers, page_data=page_data, total_pages=total_pages, current_page=page)
 
