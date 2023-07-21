@@ -20,24 +20,44 @@
             {% endfor %}
         </tr>   
     </table>
-    <div class="detail_name">월간 매출액</div>
-    <div class="detail_container">
-    <table>
-        <tr>
-            {% for header in month_headers %}
-                <th>{{ header }}</th>
-            {% endfor %}
-        </tr>
 
-        {% for d in month_data %}
-        <tr>
-            {% set keys = d.keys()|list %}
-            {% for key in keys %}
-                <td>{{ d[key] }}</td>
+    
+    <div class="detail_container">
+    <div class="detail_name">월간 매출액</div>
+    {% if option != 1 %}
+        <table>
+            <tr>
+                {% for header in month_headers %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+
+            {% for d in month_data %}
+            <tr>
+                {% set keys = d.keys()|list %}
+                {% for key in keys %}
+                    <td>{{ d[key] }}</td>
+                {% endfor %} 
+            </tr> 
+            {% endfor %}  
+        </table>
+    {% else %}
+        <table>
+            <tr>
+                {% for header in month_headers %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+
+            {% for d in month_data %}
+            <tr>
+                <td><a href="?month={{ d.Month }}">{{ d.Month }}</a></td>
+                <td>{{ d.Revenue }}</td>
+                <td>{{ d.Count }}</td>
+            </tr>
             {% endfor %} 
-        </tr> 
-        {% endfor %}  
-    </table>
+        </table>        
+    {% endif %}
 
     <div class="detail_name">단골 고객</div>
     <div >

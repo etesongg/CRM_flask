@@ -43,7 +43,8 @@
 
 {% block graph %}
 <div class="wrapper chart">
-    <h3>연령대별 고객 수</h3>
+    
+    <h3>연령대별 고객 수(총 {{ count_data }}명)</h3>
     <div>
         <canvas id="AgeGroup_Chart"></canvas>
     </div>
@@ -51,6 +52,9 @@
     const labels = {{ labels | tojson }}; 
     const data = {{ values | tojson }};        
     </script>
+</div>
+<div class="wrapper map">
+
 </div>
 {% endblock %}
 

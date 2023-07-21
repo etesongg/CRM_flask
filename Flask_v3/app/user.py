@@ -35,15 +35,18 @@ def index():
         GROUP BY age_group;
     """
     rows, labels, values = dbdata.make_chart(query)
+
+    _, count_data = dbdata.read_data_db("SELECT count(*) FROM user")
+    count_data = int(count_data[0]['count(*)'])
+    print(count_data)
     
-    return render_template('users.html', headers=headers, page_data=page_data, total_pages=total_pages, search_name=search_name, search_gender=search_gender, current_page=page, rows=rows, labels=labels, values=values)
+    return render_template('users.html', headers=headers, page_data=page_data, total_pages=total_pages, search_name=search_name, search_gender=search_gender, current_page=page, rows=rows, labels=labels, values=values, count_data=count_data)
 
 @user_bp.route('/user_detail/<id>')
 def user_detail(id):
-    print(id)
     query = "SELECT * FROM user WHERE id = ?"
     headers, datas = dbdata.read_data_db(query, (id, ))
-    print(datas)
+
     # type(datas) : list
     row = datas[0]
 

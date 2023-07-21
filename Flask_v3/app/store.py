@@ -20,24 +20,10 @@ def store():
 
 @store_bp.route('/store_detail/<id>')
 def store_detail(id):
-    print(id)
     query = "SELECT * FROM store WHERE id = ?"
     headers, datas = dbdata.read_data_db(query, (id, ))
 
     row = datas[0]
-
-    # 월간 매출액
-    query = """
-    SELECT SUBSTR(o.ordered_at, 1, 7) AS Month, sum(i.unit_price) AS Revenue, count(*) AS Count
-    FROM store s
-    JOIN 'order' o ON s.id = o.store_id
-    JOIN order_item oi ON o.id = oi.order_id
-    JOIN item i ON oi.item_id = i.id
-    WHERE s.id = ?
-    GROUP BY Month
-    """
-
-    month_headers, month_data = dbdata.read_data_db(query, (id, ))
 
     # 단골고객
     query = """
@@ -47,9 +33,42 @@ def store_detail(id):
     JOIN user u ON o.user_id = u.id
     WHERE s.id = ?
     GROUP BY user_id
-    limit 10
+    ORDER BY name
+    limit 8
     """
 
     freq_headers, freq_data = dbdata.read_data_db(query, (id, ))
 
-    return render_template('store_detail.html', user=row, headers=headers, month_headers=month_headers, month_data=month_data, freq_headers=freq_headers, freq_data=freq_data)
+    # 월간 매출액 detail
+    month = request.args.get('month')
+    
+    if month:
+        option = 0
+        query = """
+            SELECT SUBSTR(o.ordered_at, 1, 10) AS Date, sum(i.unit_price) AS Revenue, count(*) AS Count
+            FROM store s
+            JOIN 'order' o ON s.id = o.store_id
+            JOIN order_item oi ON o.id = oi.order_id
+            JOIN item i ON oi.item_id = i.id
+            WHERE s.id = ? AND SUBSTR(o.ordered_at, 1, 7) = ?
+            GROUP BY Date
+            ORDER BY Date DESC
+            """
+        month_headers, month_data = dbdata.read_data_db(query, (id, month ))
+
+    else:
+        option = 1
+        # 월간 매출액
+        query = """
+        SELECT SUBSTR(o.ordered_at, 1, 7) AS Month, sum(i.unit_price) AS Revenue, count(*) AS Count
+        FROM store s
+        JOIN 'order' o ON s.id = o.store_id
+        JOIN order_item oi ON o.id = oi.order_id
+        JOIN item i ON oi.item_id = i.id
+        WHERE s.id = ?
+        GROUP BY Month
+        """
+
+        month_headers, month_data = dbdata.read_data_db(query, (id, ))
+
+    return render_template('store_detail.html', user=row, headers=headers, month_headers=month_headers, month_data=month_data, freq_headers=freq_headers, freq_data=freq_data, option=option)
