@@ -1,5 +1,7 @@
 from flask import Blueprint, request, render_template
 
+# from model.models import UserDb
+
 from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
@@ -15,6 +17,7 @@ def index():
 
     per_page = 10
 
+    # db = UserDb()
     # db 읽기 & 검색 결과에 따른 데이터 보여주기
     query = "SELECT * FROM user WHERE name like ? AND gender like ?"
     headers, datas = dbdata.read_data_db(query,('%'+search_name+'%', search_gender+'%', ))
