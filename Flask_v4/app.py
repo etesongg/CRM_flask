@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-# import os
+import os
 
 from views.user import user_bp
 from views.store import store_bp
@@ -10,11 +10,11 @@ from views.item import item_bp
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///HugeCrm.db'
+app.instance_path = os.getcwd()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/HugeCrm.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-
 
 # Blueprint 등록
 app.register_blueprint(user_bp)
