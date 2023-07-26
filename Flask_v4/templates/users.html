@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block search %}
+    <div class="search">
+        <div class="search_name">
+        <form action="/" method="get">
+            <label for="Name">Name: </label>
+            <input type="text" name="name" value="{{ search_name }}" >
+        </div>
+        <div class="search_gender">
+            <label for="gender">gender: </label>
+            <select name="gender" id="">
+                <option value=""></option>
+                <option value="Male" {% if search_gender == "Male" %}selected{% endif %} >Male</option>
+                <option value="Female" {% if search_gender == "Female" %}selected{% endif %}>Female</option>
+            </select>
+            <button type="submit">검색</button>
+        </div>    
+        </form>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="main_container">
+    <table border="1">
+        <tr>
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        {% for data in page_data %}
+        <tr onclick="window.location='/user_detail/{{ data.id }}'">
+            {% set keys = data.keys()|list %}
+            <td><a href="/user_detail/{{ data.id }}">{{ data.id }}</a></td>
+            {% for key in keys[1:] %}
+                <td>{{ data[key] }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %} 
+    </table>
+    </div>
+{% endblock %}
+
+{% block graph %}
+<div class="wrapper chart">
+    
+    <h3>연령대별 고객 수(총 {{ count_data }}명)</h3>
+    <div>
+        <canvas id="AgeGroup_Chart"></canvas>
+    </div>
+    <script> 
+    const labels = {{ labels | tojson }}; 
+    const data = {{ values | tojson }};        
+    </script>
+</div>
+<div class="wrapper map">
+
+</div>
+{% endblock %}
+

@@ -1,0 +1,25 @@
+{% extends "base_detail.html" %}
+
+{% block search %}
+<div class="other_search"></div>
+{% endblock %}
+
+{% block content %}
+<div class="main_container">
+    <table border="1">
+        <tr>
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+   
+        <tr>
+            <td>{{ data.id }}</td>
+            <td>{{ data.ordered_at[:19] }}</td>
+            <td><a href="/user_detail/{{ data.user_id }}">{{ data.user_id }}</a></td>
+            <td><a href="/store_detail/{{ data.store_id }}">{{ data.store_id }}</a></td>
+        </tr>   
+    </table>
+    </div>
+
+{% endblock %}

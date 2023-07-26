@@ -16,7 +16,6 @@ def store():
 
     total_pages, page, page_data = calc_pages(datas, per_page, page)
 
-
     return render_template('store.html', headers=headers, page_data=page_data, total_pages=total_pages, current_page=page)
 
 @store_bp.route('/store_detail/<id>')

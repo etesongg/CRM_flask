@@ -1,0 +1,82 @@
+{% extends "base_detail.html" %}
+
+{% block search %}
+<div class="other_search"></div>
+{% endblock %}
+
+{% block content %}
+    <div>
+    <table border="1">
+        <tr>
+            {% for header in headers[1:] %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+   
+        <tr>
+            {% set values = user.values()|list %}
+            {% for value in values[1:] %}
+                <td>{{ value }}</td>
+            {% endfor %}
+        </tr>   
+    </table>
+
+    
+    <div class="detail_container">
+        {% if option == 0 %}
+            <div class="detail_name">월간 매출액(일별)</div>
+            <table>
+                <tr>
+                    {% for header in month_headers %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+
+                {% for d in month_data %}
+                <tr>
+                    {% set keys = d.keys()|list %}
+                    {% for key in keys %}
+                        <td>{{ d[key] }}</td>
+                    {% endfor %} 
+                </tr> 
+                {% endfor %}  
+            </table>
+        {% else %}
+            <div class="detail_name">월간 매출액</div>
+            <table>
+                <tr>
+                    {% for header in month_headers %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+
+                {% for d in month_data %}
+                <tr>
+                    <td><a href="?month={{ d.Month }}">{{ d.Month }}</a></td>
+                    <td>{{ d.Revenue }}</td>
+                    <td>{{ d.Count }}</td>
+                </tr>
+                {% endfor %} 
+            </table>        
+        {% endif %}
+
+        <div class="detail_name">단골 고객</div>
+        <div >
+            <table>
+                <tr>
+                    {% for header in freq_headers %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+        
+                {% for data in freq_data %}
+                <tr>
+                    <td><a href="/user_detail/{{ data.user_id }}">{{ data.user_id }}</a></td>
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.frequency }}</td>
+                </tr> 
+                {% endfor %}  
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script defer src="{{url_for('static', filename='script.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% endblock %}   
+</head>
+<body>
+    <div class="wrapper">
+    <!-- 네비게이션 -->
+    {% block nav %}
+    <div>
+        <nav>
+            <div class="maintain"></div>
+            <ul class="main-nav">
+                <li><a href="{{ url_for('user.index') }}">user</a></li>
+                <li><a href="{{ url_for('store.store') }}">store</a></li>
+                <li><a href="{{ url_for('order.order') }}">order</a></li>
+                <li><a href="{{ url_for('orderitem.orderitem') }}">orderitem</a></li>
+                <li><a href="{{ url_for('item.item') }}">item</a></li>
+            </ul>
+        </nav>
+    </div>
+    {% endblock %}
+
+    <!-- 검색 바 -->
+    {% block search %}
+    <div class="other_search"></div>
+    {% endblock %}
+
+    {% block content %}
+    <!-- 메인 콘텐츠 -->
+    {% endblock %}
+    
+    <!-- 페이지 네이션 -->
+    {% block pagination %}
+    <div class="page_num">
+        {% if total_pages < 6 %}
+            {% for num in range(1, total_pages + 1) %}
+                <a href="?name={{ search_name }}&gender={{ search_gender }}&page={{num}}" class="button">{{ num }}</a>
+            {% endfor %}
+        {% elif current_page < 6 %}
+            {% for num in range(1, 6) %} 
+                <a href="?name={{ search_name }}&gender={{ search_gender }}&page={{num}}" class="button">{{ num }}</a>
+            {% endfor %}
+            <a href="?name={{ search_name }}&gender={{ search_gender }}&page=6" class="button">다음</a>
+        {% elif current_page > total_pages-6 %}
+            <a href="?name={{ search_name }}&gender={{ search_gender }}&page=1" class="button">처음</a>
+            <a href="?name={{ search_name }}&gender={{ search_gender }}&page={{ current_page-5 }}" class="button">이전</a>
+            {% for num in range(total_pages-5, total_pages+1) %}
+                <a href="?name={{ search_name }}&gender={{ search_gender }}&page={{num}}" class="button">{{ num }}</a>
+            {% endfor %}
+        {% else %}
+            <a href="?name={{ search_name }}&gender={{ search_gender }}&page=1" class="button">처음</a>
+            <a href="?name={{ search_name }}&gender={{ search_gender }}&page={{ current_page-5 }}" class="button">이전</a>
+            {% for num in range(current_page, current_page+5) %}
+                <a href="?name={{ search_name }}&gender={{ search_gender }}&page={{num}}" class="button">{{ num }}</a>
+            {% endfor %}
+            <a href="?name={{ search_name }}&gender={{ search_gender }}&page={{ current_page+5 }}" class="button">이후</a>
+            <a href="?name={{ search_name }}&gender={{ search_gender }}&page={{ total_pages }}"class="button">끝</a>
+        {% endif %}
+    </div>
+    {% endblock %}
+
+    {% block goback %}
+    <!-- 뒤로가기 버튼 -->
+    {% endblock %}
+</div>
+{% block graph %}
+<!-- 그래프 -->
+{% endblock %}
+</body>
+</html>

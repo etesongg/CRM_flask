@@ -1,0 +1,61 @@
+{% extends "base_detail.html" %}
+
+{% block search %}
+<div class="other_search"></div>
+{% endblock %}
+
+{% block content %}
+    <div>
+    <table border="1">
+        <tr>
+            {% for header in headers[2:] %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+   
+        <tr>
+            {% set values = user.values()|list %}
+            {% for value in values[2:] %}
+                <td>{{ value }}</td>
+            {% endfor %}
+        </tr>   
+    </table>
+
+    <div class="detail_name">월간 매출액</div>
+    <div class="detail_container">
+    <table>
+        <tr>
+            {% for header in month_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+
+        {% for d in month_data %}
+        <tr>
+            {% set keys = d.keys()|list %}
+            {% for key in keys %}
+                <td>{{ d[key] }}</td>
+            {% endfor %} 
+        </tr> 
+        {% endfor %}  
+
+    </table>
+    </div>
+    </div>
+{% endblock %}
+
+{% block chart %}
+<div class="wrapper chart">
+    월별 매출액 차트
+    <div>
+        <canvas id="MonthlySales_Chart"></canvas>
+    </div>
+    <script> 
+    const labels = {{ labels | tojson }}; 
+    const data = {{ values | tojson }};
+    const data2 = {{ values2 | tojson }};        
+    </script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script defer src="{{url_for('static', filename='script.js')}}"></script>
+{% endblock %}

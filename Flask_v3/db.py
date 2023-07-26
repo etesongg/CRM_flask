@@ -4,7 +4,7 @@ import csv
 conn = sqlite3.connect('db/HugeCrm.db', check_same_thread=False)
 cursor = conn.cursor()
 
-def create_tables(): 
+def make_db(): 
     cursor.execute("DROP TABLE if exists user")
     cursor.execute("DROP TABLE if exists store")
     cursor.execute("DROP TABLE if exists 'order'")
@@ -111,7 +111,7 @@ def orderitem_csv_to_db():
     conn.commit()
 
 
-create_tables()
+make_db()
 user_csv_to_db()
 store_csv_to_db()
 item_csv_to_db()

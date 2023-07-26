@@ -1,0 +1,61 @@
+{% extends "base_detail.html" %}
+
+{% block search %}
+<div class="other_search"></div>
+{% endblock %}
+
+{% block content %}
+    <div>
+    <table border="1">
+        <tr>
+            {% for header in headers[1:] %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+   
+        <tr>
+            {% set values = data.values()|list %}
+            {% for value in values[1:] %}
+                <td>{{ value }}</td>
+            {% endfor %}
+        </tr>   
+    </table>
+
+    <div class="detail_name">주문 정보</div>
+    <div class="detail_container">
+    <table>
+        <tr>
+            {% for header in order_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+
+        {% for data in order_data %}
+        <tr>
+            <td><a href="/orderitem_detail/{{ data.OrderId }}">{{ data.OrderId }}</a></td>
+            <td>{{ data.PurchasedDate }}</td>
+            <td><a href="/store_detail/{{ data.PurchsedLocation }}">{{ data.PurchsedLocation }}</a></td>
+        </tr> 
+        {% endfor %}  
+
+    </table>
+        <div class="detail_name">자주 방문한 매장 Top 5</div>
+        <ul>
+            {% for visit_store in visit_stores %}
+            <li>{{visit_store.name}} ({{visit_store.count}}번 방문)</li>
+            {% endfor %}
+        </ul>
+
+        <div class="detail_name">자주 주문한 상품명 Top 5</div>
+        <ul>
+            {% for order_item in order_items %}
+            <li>{{order_item.name}} ({{order_item.count}}번 주문)</li>
+            {% endfor %}
+        </ul>
+    </div>
+    </div>
+{% endblock %}
+
+
+
+
