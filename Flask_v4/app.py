@@ -1,12 +1,20 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+# import os
 
-from app.user import user_bp
-from app.store import store_bp
-from app.order import order_bp
-from app.orderitem import orderitem_bp
-from app.item import item_bp
+from views.user import user_bp
+from views.store import store_bp
+from views.order import order_bp
+from views.orderitem import orderitem_bp
+from views.item import item_bp
 
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///HugeCrm.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
 
 # Blueprint 등록
 app.register_blueprint(user_bp)
@@ -20,4 +28,4 @@ def catch_all(path):
     return f"404 - Page not found for URL: /{path}", 404
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=5003,debug=True)
+    app.run()
