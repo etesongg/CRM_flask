@@ -3,9 +3,9 @@ from flask import Blueprint, request, render_template
 from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
-from sqlalchemy import case, func
+from sqlalchemy import case, func, desc
 
-from models.model import User
+from models.model import User, Order, Store
 
 
 user_bp = Blueprint('user', __name__)
@@ -63,14 +63,8 @@ def index():
 @user_bp.route('/user_detail/<id>')
 def user_detail(id):
 
-    # query = "SELECT * FROM user WHERE id = ?"
-    # headers, datas = dbdata.read_data_db(query, (id, ))
-
-    user = User.query.filter(User.id == id).first()
+    data = User.query.filter(User.id == id).first()
     headers = ['Name', 'Gender', 'Age',	'Birthdate', 'Address']
-
-    # type(datas) : list
-    # row = datas[0]
 
     # 주문 정보
     query = """ 
@@ -81,7 +75,19 @@ def user_detail(id):
     WHERE u.id = ?
     ORDER BY PurchasedDate DESC
     """
-    order_headers, order_data = dbdata.read_data_db(query, (id, ))
+    # order_headers, order_data = dbdata.read_data_db(query, (id, ))
+
+    order_data = User.query \
+                .join(Order, User.id == Order.user_id) \
+                .join(Store, Store.id == Order.store_id) \
+                .with_entities(
+                    Order.id.label('OrderId'),
+                    Order.ordered_at.label('PurchasedDate'),
+                    Order.store_id.label('PurchasedLocation')
+                ) \
+                .filter(User.id == id) \
+                .order_by(desc('PurchasedDate')).all()
+    order_headers = ['OrderId','PurchasedDate', 'PurchasedLocation']
 
     # 자주 방문한 매장 Top 5
     query = """
@@ -111,4 +117,4 @@ def user_detail(id):
     """
     _, order_items = dbdata.read_data_db(query, (id, ))
  
-    return render_template('user_detail.html', data=user, headers=headers, order_headers=order_headers, order_data=order_data, visit_stores=visit_stores, order_items=order_items)
+    return render_template('user_detail.html', data=data, headers=headers, order_headers=order_headers, order_data=order_data, visit_stores=visit_stores, order_items=order_items)
