@@ -23,10 +23,9 @@ def store():
 
 @store_bp.route('/store_detail/<id>')
 def store_detail(id):
-    query = "SELECT * FROM store WHERE id = ?"
-    headers, datas = dbdata.read_data_db(query, (id, ))
 
-    row = datas[0]
+    data = Store.query.filter(Store.id == id).first()
+    headers = ['Name', 'Type', 'Address']
 
     # 단골고객
     query = """
@@ -74,4 +73,4 @@ def store_detail(id):
 
         month_headers, month_data = dbdata.read_data_db(query, (id, ))
 
-    return render_template('store_detail.html', user=row, headers=headers, month_headers=month_headers, month_data=month_data, freq_headers=freq_headers, freq_data=freq_data, option=option)
+    return render_template('store_detail.html', data=data, headers=headers, month_headers=month_headers, month_data=month_data, freq_headers=freq_headers, freq_data=freq_data, option=option)

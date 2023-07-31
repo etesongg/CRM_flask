@@ -8,16 +8,15 @@
     <div>
     <table border="1">
         <tr>
-            {% for header in headers[1:] %}
+            {% for header in headers %}
                 <th>{{ header }}</th>
             {% endfor %}
         </tr>
    
         <tr>
-            {% set values = user.values()|list %}
-            {% for value in values[1:] %}
-                <td>{{ value }}</td>
-            {% endfor %}
+            <td>{{ data.name }}</td>
+            <td>{{ data.type }}</td>
+            <td>{{ data.address }}</td>
         </tr>   
     </table>
 
