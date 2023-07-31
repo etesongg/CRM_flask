@@ -3,7 +3,8 @@ from flask import Blueprint, request, render_template
 from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
-from models.model import Store
+from sqlalchemy import func
+from models.model import Store, Order, User
 
 store_bp = Blueprint('store', __name__)
 dbdata = ReadData()
@@ -28,18 +29,19 @@ def store_detail(id):
     headers = ['Name', 'Type', 'Address']
 
     # 단골고객
-    query = """
-    SELECT u.id AS user_id, u.name AS name, count(*) AS frequency
-    FROM store s
-    JOIN 'order' o ON s.id = o.store_id
-    JOIN user u ON o.user_id = u.id
-    WHERE s.id = ?
-    GROUP BY user_id
-    ORDER BY name
-    limit 8
-    """
-
-    freq_headers, freq_data = dbdata.read_data_db(query, (id, ))
+    freq_data = Store.query \
+                .join(Order, Store.id == Order.store_id) \
+                .join(User, Order.user_id == User.id) \
+                .with_entities(
+                    User.id.label('user_id'),
+                    User.name.label('name'),
+                    func.count().label("frequency")
+                ) \
+                .filter(Store.id == id) \
+                .group_by('user_id') \
+                .order_by(User.name) \
+                .limit(8).all()      
+    freq_headers = ['User_Id', 'Name', 'Count']
 
     # 월간 매출액 detail
     month = request.args.get('month')

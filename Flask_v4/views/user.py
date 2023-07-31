@@ -83,7 +83,7 @@ def user_detail(id):
                 .filter(User.id == id) \
                 .order_by(desc('PurchasedDate')) \
                 .all()
-    order_headers = ['OrderId','PurchasedDate', 'PurchasedLocation']
+    order_headers = ['Order_Id','PurchasedDate', 'PurchasedLocation']
 
     # 자주 방문한 매장 Top 5
     visit_stores = User.query \
