@@ -67,16 +67,6 @@ def user_detail(id):
     headers = ['Name', 'Gender', 'Age',	'Birthdate', 'Address']
 
     # 주문 정보
-    query = """ 
-    SELECT o.id AS OrderId, o.ordered_at AS PurchasedDate, o.store_id AS PurchsedLocation
-    FROM user u 
-    JOIN 'order' o ON u.id = o.user_id
-    JOIN store s ON o.store_id = s.id
-    WHERE u.id = ?
-    ORDER BY PurchasedDate DESC
-    """
-    # order_headers, order_data = dbdata.read_data_db(query, (id, ))
-
     order_data = User.query \
                 .join(Order, User.id == Order.user_id) \
                 .join(Store, Store.id == Order.store_id) \
@@ -90,17 +80,17 @@ def user_detail(id):
     order_headers = ['OrderId','PurchasedDate', 'PurchasedLocation']
 
     # 자주 방문한 매장 Top 5
-    query = """
-    SELECT s.name AS name, count(*) AS count
-    FROM user u
-    JOIN 'order' o ON o.user_id = u.id
-    JOIN store s ON s.id = o.store_id
-    WHERE u.id = ?
-    GROUP BY s.name
-    ORDER BY count
-    limit 5
-    """
-    _, visit_stores = dbdata.read_data_db(query, (id, ))
+    visit_stores = User.query \
+                    .join(Order, User.id == Order.user_id) \
+                    .join(Store, Store.id == Order.store_id) \
+                    .with_entities(
+                        Store.name.label('name'),
+                        func.count().label('count')
+                    ) \
+                    .filter(User.id == id) \
+                    .group_by(Store.name) \
+                    .order_by('count') \
+                    .limit(5).all()
 
     # 자주 주문한 상품명 Top 5
     query = """
