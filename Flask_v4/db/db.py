@@ -1,7 +1,7 @@
 import sqlite3
 import csv
 
-conn = sqlite3.connect('db/HugeCrm.db', check_same_thread=False)
+conn = sqlite3.connect('HugeCrm.db', check_same_thread=False)
 cursor = conn.cursor()
 
 def make_db(): 
@@ -56,7 +56,7 @@ def make_db():
 
 # def csv_to_db():
 def user_csv_to_db():
-    with open('csv/user.csv', 'r', encoding='utf-8-sig') as file:
+    with open('../csv/user.csv', 'r', encoding='utf-8-sig') as file:
         csv_data = csv.reader(file)
         data =[]
         for row in csv_data:
@@ -67,7 +67,7 @@ def user_csv_to_db():
         conn.commit()
 
 def store_csv_to_db():
-    with open('csv/store.csv', 'r', encoding='utf-8-sig') as file:
+    with open('../csv/store.csv', 'r', encoding='utf-8-sig') as file:
         csv_data = csv.reader(file)
         data =[]
         for row in csv_data:
@@ -78,7 +78,7 @@ def store_csv_to_db():
     conn.commit()
 
 def item_csv_to_db():
-    with open('csv/item.csv', 'r', encoding='utf-8-sig') as file:
+    with open('../csv/item.csv', 'r', encoding='utf-8-sig') as file:
         csv_data = csv.reader(file)
         data =[]
         for row in csv_data:
@@ -89,7 +89,7 @@ def item_csv_to_db():
     conn.commit()
 
 def order_csv_to_db():
-    with open('csv/order.csv', 'r', encoding='utf-8-sig') as file:
+    with open('../csv/order.csv', 'r', encoding='utf-8-sig') as file:
         csv_data = csv.reader(file)
         data =[]
         for row in csv_data:
@@ -100,7 +100,7 @@ def order_csv_to_db():
     conn.commit()
 
 def orderitem_csv_to_db():
-    with open('csv/orderitem.csv', 'r', encoding='utf-8-sig') as file:
+    with open('../csv/orderitem.csv', 'r', encoding='utf-8-sig') as file:
         csv_data = csv.reader(file)
         data =[]
         for row in csv_data:
