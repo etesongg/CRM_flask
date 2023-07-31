@@ -5,7 +5,7 @@ from functions.calc_pages import calc_pages
 
 from sqlalchemy import case, func, desc
 
-from models.model import User, Order, Store
+from models.model import User, Order, Store, OrderItem, Item
 
 
 user_bp = Blueprint('user', __name__)
@@ -20,7 +20,12 @@ def index():
     per_page = 10
 
     # 검색 결과에 따른 데이터 보여주기    
-    users_seach = User.query.filter(User.name.like('%'+search_name+'%'), User.gender.like(search_gender+'%')).all()
+    users_seach = User.query \
+                    .filter(
+                    User.name.like('%'+search_name+'%'), 
+                    User.gender.like(search_gender+'%') 
+                    ) \
+                    .all()
         
     # 페이지 계산
     total_pages, page, page_data = calc_pages(users_seach, per_page, page)
@@ -76,7 +81,8 @@ def user_detail(id):
                     Order.store_id.label('PurchasedLocation')
                 ) \
                 .filter(User.id == id) \
-                .order_by(desc('PurchasedDate')).all()
+                .order_by(desc('PurchasedDate')) \
+                .all()
     order_headers = ['OrderId','PurchasedDate', 'PurchasedLocation']
 
     # 자주 방문한 매장 Top 5
@@ -93,18 +99,18 @@ def user_detail(id):
                     .limit(5).all()
 
     # 자주 주문한 상품명 Top 5
-    query = """
-    SELECT i.name AS name, count(*) AS count
-    FROM user u
-    JOIN 'order' o ON o.user_id = u.id
-    JOIN store s ON s.id = o.store_id
-    JOIN order_item oi ON o.id = oi.order_id
-    JOIN item i ON oi.item_id = i.id
-    WHERE u.id = ?
-    GROUP BY i.name
-    ORDER BY count
-    limit 5
-    """
-    _, order_items = dbdata.read_data_db(query, (id, ))
+    order_items = User.query \
+                    .join(Order, Order.user_id == User.id) \
+                    .join(Store, Store.id == Order.store_id) \
+                    .join(OrderItem, Order.id == OrderItem.order_id) \
+                    .join(Item, OrderItem.item_id == Item.id) \
+                    .with_entities(
+                        Item.name.label('name'),
+                        func.count().label('count')
+                    ) \
+                    .filter(User.id == id) \
+                    .group_by(Item.name) \
+                    .order_by('count') \
+                    .limit(5).all()
  
     return render_template('user_detail.html', data=data, headers=headers, order_headers=order_headers, order_data=order_data, visit_stores=visit_stores, order_items=order_items)
