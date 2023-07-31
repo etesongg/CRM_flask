@@ -3,6 +3,8 @@ from flask import Blueprint, request, render_template
 from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
+from sqlalchemy import case, func
+
 from models.model import User
 
 
@@ -17,13 +19,8 @@ def index():
 
     per_page = 10
 
-    # db = UserDb()
-    # db 읽기 & 검색 결과에 따른 데이터 보여주기
-    
+    # 검색 결과에 따른 데이터 보여주기    
     users_seach = User.query.filter(User.name.like('%'+search_name+'%'), User.gender.like(search_gender+'%')).all()
-    # print(users_seach)
-    # query = "SELECT * FROM user WHERE name like ? AND gender like ?"
-    # headers, datas = dbdata.read_data_db(query,('%'+search_name+'%', search_gender+'%', ))
         
     # 페이지 계산
     total_pages, page, page_data = calc_pages(users_seach, per_page, page)
@@ -42,13 +39,24 @@ def index():
         FROM user
         GROUP BY age_group;
     """
+    # 그래프 쿼리 sqlalchemy로 만들긴 했는데 나머지 페이지 기본적인거 다 하고 그래프 하기,,
+    
+    # bar_result = User.query(
+    #     case(
+    #             (User.age < 20, '10대'),
+    #             (User.age.between(20, 29), '20대'),
+    #             (User.age.between(30, 39), '30대'),
+    #             (User.age.between(40, 49), '40대'),
+    #             (User.age.between(50, 59), '50대'),
+    #             (User.age >= 60, '60대 이상'),
+    #             else_='기타'
+    #         ).label('age_group'),
+    #         func.count().label('age_count')
+    #     ).group_by('age_group').all()
+
     rows, labels, values = dbdata.make_chart(query)
 
-    _, count_data = dbdata.read_data_db("SELECT count(*) FROM user")
-    count_data = int(count_data[0]['count(*)'])
-    print(count_data)
-    
-    print(page_data)
+    count_data = User.query.count()
 
     return render_template('users.html', headers=headers, page_data=page_data, total_pages=total_pages, search_name=search_name, search_gender=search_gender, current_page=page, rows=rows, labels=labels, values=values, count_data=count_data)
 
