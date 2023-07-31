@@ -33,10 +33,9 @@
 
                 {% for d in month_data %}
                 <tr>
-                    {% set keys = d.keys()|list %}
-                    {% for key in keys %}
-                        <td>{{ d[key] }}</td>
-                    {% endfor %} 
+                    <td>{{ d.Month }}</td>
+                    <td>{{ d.Revenue }}</td>
+                    <td>{{ d.Count }}</td>
                 </tr> 
                 {% endfor %}  
             </table>

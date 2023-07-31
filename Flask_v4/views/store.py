@@ -3,8 +3,8 @@ from flask import Blueprint, request, render_template
 from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
-from sqlalchemy import func
-from models.model import Store, Order, User
+from sqlalchemy import func, desc
+from models.model import Store, Order, User, OrderItem, Item
 
 store_bp = Blueprint('store', __name__)
 dbdata = ReadData()
@@ -28,7 +28,7 @@ def store_detail(id):
     data = Store.query.filter(Store.id == id).first()
     headers = ['Name', 'Type', 'Address']
 
-    # 단골고객
+    # 단골 고객
     freq_data = Store.query \
                 .join(Order, Store.id == Order.store_id) \
                 .join(User, Order.user_id == User.id) \
@@ -47,32 +47,38 @@ def store_detail(id):
     month = request.args.get('month')
     
     if month:
+        # 월간 매출액(일별)
         option = 0
-        query = """
-            SELECT SUBSTR(o.ordered_at, 1, 10) AS Date, sum(i.unit_price) AS Revenue, count(*) AS Count
-            FROM store s
-            JOIN 'order' o ON s.id = o.store_id
-            JOIN order_item oi ON o.id = oi.order_id
-            JOIN item i ON oi.item_id = i.id
-            WHERE s.id = ? AND SUBSTR(o.ordered_at, 1, 7) = ?
-            GROUP BY Date
-            ORDER BY Date DESC
-            """
-        month_headers, month_data = dbdata.read_data_db(query, (id, month ))
+        month_data = Store.query \
+                    .join(Order, Order.store_id == Store.id) \
+                    .join(OrderItem, Order.id == OrderItem.order_id) \
+                    .join(Item, OrderItem.item_id == Item.id) \
+                    .with_entities(
+                        func.SUBSTRING(Order.ordered_at, 1, 10).label('Month'),
+                        func.sum(Item.unit_price).label('Revenue'),
+                        func.count().label('count')
+                    ) \
+                    .filter(Store.id == id, func.SUBSTRING(Order.ordered_at, 1, 7) == month) \
+                    .group_by(func.SUBSTRING(Order.ordered_at, 1, 10)) \
+                    .order_by(desc('Month')) \
+                    .all()
+        month_headers = ['Month', 'Revenue', 'Count']
 
     else:
-        option = 1
         # 월간 매출액
-        query = """
-        SELECT SUBSTR(o.ordered_at, 1, 7) AS Month, sum(i.unit_price) AS Revenue, count(*) AS Count
-        FROM store s
-        JOIN 'order' o ON s.id = o.store_id
-        JOIN order_item oi ON o.id = oi.order_id
-        JOIN item i ON oi.item_id = i.id
-        WHERE s.id = ?
-        GROUP BY Month
-        """
-
-        month_headers, month_data = dbdata.read_data_db(query, (id, ))
+        option = 1
+        month_data = Store.query \
+                    .join(Order, Store.id == Order.store_id) \
+                    .join(OrderItem, Order.id == OrderItem.order_id) \
+                    .join(Item, OrderItem.item_id == Item.id) \
+                    .with_entities(
+                        func.SUBSTRING(Order.ordered_at, 1, 7).label('Month'),
+                        func.sum(Item.unit_price).label('Revenue'),
+                        func.count().label('count')
+                    ) \
+                    .filter(Store.id == id) \
+                    .group_by(func.SUBSTRING(Order.ordered_at, 1, 7)) \
+                    .all()
+        month_headers = ['Month', 'Revenue', 'Count']
 
     return render_template('store_detail.html', data=data, headers=headers, month_headers=month_headers, month_data=month_data, freq_headers=freq_headers, freq_data=freq_data, option=option)
