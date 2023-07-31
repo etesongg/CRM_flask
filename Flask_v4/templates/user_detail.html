@@ -8,16 +8,17 @@
     <div>
     <table border="1">
         <tr>
-            {% for header in headers[1:] %}
+            {% for header in headers %}
                 <th>{{ header }}</th>
             {% endfor %}
         </tr>
    
         <tr>
-            {% set values = data.values()|list %}
-            {% for value in values[1:] %}
-                <td>{{ value }}</td>
-            {% endfor %}
+            <td>{{ data.name }}</td>
+            <td>{{ data.gender }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.birthdate }}</td>
+            <td>{{ data.address }}</td>
         </tr>   
     </table>
 
