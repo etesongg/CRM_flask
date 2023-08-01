@@ -28,12 +28,11 @@
             {% endfor %}
         </tr>
 
-        {% for d in month_data %}
+        {% for month_data in month_datas %}
         <tr>
-            {% set keys = d.keys()|list %}
-            {% for key in keys %}
-                <td>{{ d[key] }}</td>
-            {% endfor %} 
+            <td>{{ month_data.Month }}</td>
+            <td>{{ month_data.TotalRevenue }}</td>
+            <td>{{ month_data.ItemCount }}</td>
         </tr> 
         {% endfor %}  
 

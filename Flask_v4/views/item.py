@@ -1,15 +1,11 @@
-import datetime
-
 from flask import Blueprint, request, render_template
 
-from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
 from models.model import Item, Order, OrderItem
 from sqlalchemy import func
 
 item_bp = Blueprint('item', __name__)
-dbdata = ReadData()
 
 @item_bp.route('/item/')
 def item():
@@ -35,30 +31,26 @@ def item_detail(id):
     headers = ['Type', 'Unit_Price']
 
     # 월간 매출액
-    query = """
-    SELECT SUBSTR(o.ordered_at, 1, 7) AS Month, sum(i.unit_price) AS TotalRevenue, count(*) AS ItemCount
-    FROM 'order' o
-    JOIN order_item oi ON o.id = oi.order_id
-    JOIN item i ON oi.item_id = i.id
-    WHERE i.id = ?
-    GROUP BY Month
-    """
-    month_headers, month_data = dbdata.read_data_db(query, (id, ))
-
-    # month_data = Order.query \
-    #             .join(OrderItem, Order.id == OrderItem.order_id) \
-    #             .join(Item, OrderItem.item_id == Item.id) \
-    #             .with_entities(
-    #                 func.SUBSTRING(Order.ordered_at, 1, 7).label('Month'),
-    #                 func.sum(Item.unit_price).label('TotalRevenue'),
-    #                 func.count().label('ItemCount')
-    #             ) \
-    #             .filter(Item.id == id) \
-    #             .group_by(func.SUBSTRING(Order.ordered_at, 1, 7)) \
-    #             .all()
-    # month_headers = ['Month', 'Total Revenue', 'Item Count']
+    month_datas = Order.query \
+                .join(OrderItem, Order.id == OrderItem.order_id) \
+                .join(Item, OrderItem.item_id == Item.id) \
+                .with_entities(
+                    func.SUBSTRING(Order.ordered_at, 1, 7).label('Month'),
+                    func.sum(Item.unit_price).label('TotalRevenue'),
+                    func.count().label('ItemCount')
+                ) \
+                .filter(Item.id == id) \
+                .group_by(func.SUBSTRING(Order.ordered_at, 1, 7)) \
+                .all()  
+    month_headers = ['Month', 'TotalRevenue', 'ItemCount']
     
-    # 그래프
-    rows, lables, values, values2 = dbdata.make_mixchart(query, (id, )) # row = ('2022-03', 7000, 2)
+    labels = []
+    values = []
+    values2 = []
+    for month_data in month_datas:
+        label, value, value2 = month_data
+        labels.append(label)
+        values.append(value)
+        values2.append(value2)
 
-    return render_template('item_detail.html', data=data, headers=headers, month_headers=month_headers, month_data=month_data, rows=rows, labels=lables, values=values, values2=values2)
+    return render_template('item_detail.html', data=data, headers=headers, month_headers=month_headers, month_datas=month_datas, rows=month_datas, labels=labels, values=values, values2=values2)
