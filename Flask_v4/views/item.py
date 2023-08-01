@@ -57,6 +57,7 @@ def item_detail(id):
     #             .group_by(func.SUBSTRING(Order.ordered_at, 1, 7)) \
     #             .all()
     # month_headers = ['Month', 'Total Revenue', 'Item Count']
+    
     # 그래프
     rows, lables, values, values2 = dbdata.make_mixchart(query, (id, )) # row = ('2022-03', 7000, 2)
 

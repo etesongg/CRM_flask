@@ -1,20 +1,16 @@
 from flask import Blueprint, request, render_template
 
-from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
 from models.model import OrderItem, Order, Item
 
 orderitem_bp = Blueprint('orderitem', __name__)
-dbdata = ReadData()
 
 @orderitem_bp.route('/orderitem/')
 def orderitem():
     page = request.args.get('page', default=1, type=int)
 
     per_page = 10
-
-    # headers, datas = dbdata.read_data_db('SELECT * FROM order_item')
 
     datas = OrderItem.query.all()
     headers = ['Id', 'Order_Id', 'Item_Id']

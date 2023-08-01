@@ -1,6 +1,5 @@
 from flask import Blueprint, request, render_template
 
-from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
 from sqlalchemy import case, func, desc
@@ -9,7 +8,6 @@ from models.model import User, Order, Store, OrderItem, Item
 
 
 user_bp = Blueprint('user', __name__)
-dbdata = ReadData()
 
 @user_bp.route('/')
 def index():
@@ -32,38 +30,31 @@ def index():
 
     headers = ['Id', 'Name', 'Gender', 'Age', 'Birthdate', 'Address']
 
-    # 그래프
-    query = """
-        SELECT CASE WHEN age < 20 THEN '10대'
-        WHEN age BETWEEN 20 AND 29 THEN '20대'
-        WHEN age BETWEEN 30 AND 39 THEN '30대'
-        WHEN age BETWEEN 40 AND 49 THEN '40대'
-        WHEN age BETWEEN 50 AND 59 THEN '50대'
-        WHEN age >= 60 THEN '60대 이상'
-        END AS age_group, count(*) AS age_count
-        FROM user
-        GROUP BY age_group;
-    """
-    # 그래프 쿼리 sqlalchemy로 만들긴 했는데 나머지 페이지 기본적인거 다 하고 그래프 하기,,
-    
-    # bar_result = User.query(
-    #     case(
-    #             (User.age < 20, '10대'),
-    #             (User.age.between(20, 29), '20대'),
-    #             (User.age.between(30, 39), '30대'),
-    #             (User.age.between(40, 49), '40대'),
-    #             (User.age.between(50, 59), '50대'),
-    #             (User.age >= 60, '60대 이상'),
-    #             else_='기타'
-    #         ).label('age_group'),
-    #         func.count().label('age_count')
-    #     ).group_by('age_group').all()
+    # 연령대별 고객 수 그래프
+    bar_datas = User.query \
+                .with_entities(
+                case(
+                    (User.age < 20, '10대'),
+                    (User.age.between(20, 29), '20대'),
+                    (User.age.between(30, 39), '30대'),
+                    (User.age.between(40, 49), '40대'),
+                    (User.age.between(50, 59), '50대'),
+                    (User.age >= 60, '60대 이상'),
+                    else_='기타'
+                ).label('age_group'),
+                func.count().label('age_count') \
+                ).group_by('age_group').all()
 
-    rows, labels, values = dbdata.make_chart(query)
+    labels = []
+    values = []
+    for bar_data in bar_datas:
+        label, value = bar_data
+        labels.append(label)
+        values.append(value)
 
     count_data = User.query.count()
 
-    return render_template('users.html', headers=headers, page_data=page_data, total_pages=total_pages, search_name=search_name, search_gender=search_gender, current_page=page, rows=rows, labels=labels, values=values, count_data=count_data)
+    return render_template('users.html', headers=headers, page_data=page_data, total_pages=total_pages, search_name=search_name, search_gender=search_gender, current_page=page, rows=bar_datas, labels=labels, values=values, count_data=count_data)
 
 @user_bp.route('/user_detail/<id>')
 def user_detail(id):
