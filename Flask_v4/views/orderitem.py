@@ -3,7 +3,7 @@ from flask import Blueprint, request, render_template
 from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
-from models.model import OrderItem
+from models.model import OrderItem, Order, Item
 
 orderitem_bp = Blueprint('orderitem', __name__)
 dbdata = ReadData()
@@ -17,7 +17,7 @@ def orderitem():
     # headers, datas = dbdata.read_data_db('SELECT * FROM order_item')
 
     datas = OrderItem.query.all()
-    headers = ['id', 'order_id', 'item_id']
+    headers = ['Id', 'Order_Id', 'Item_Id']
 
     total_pages, page, page_data = calc_pages(datas, per_page, page)
 
@@ -25,18 +25,18 @@ def orderitem():
 
 @orderitem_bp.route('/orderitem_detail/<id>')
 def orderitem_detail(id):
-    
-    query = """
-    SELECT oi.*, i.name
-    FROM order_item oi
-    JOIN 'order' o ON o.id = oi.order_id
-    JOIN item i ON i.id = oi.item_id
-    WHERE o.id = ? 
-    """
-    
-    headers, datas =dbdata.read_data_db(query, (id, ))
-    
-    # row = datas[0] # user_detail > orderid로 들어갔을때 0개로 가져오면 안 될듯...
-    
+    datas = OrderItem.query \
+            .join(Order, Order.id == OrderItem.order_id) \
+            .join(Item, Item.id == OrderItem.item_id) \
+            .with_entities(
+                OrderItem.id,
+                OrderItem.order_id,
+                OrderItem.item_id,
+                Item.name
+            ) \
+            .filter(Order.id == id) \
+            .all()
+    headers = ['Id', 'Order_Id', 'Item_Id', 'Name']
+      
     return render_template('orderitem_detail.html', data=datas, headers=headers)
 
