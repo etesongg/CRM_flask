@@ -5,6 +5,8 @@ from flask import Blueprint, request, render_template
 from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
+from models.model import Item
+
 item_bp = Blueprint('item', __name__)
 dbdata = ReadData()
 
@@ -14,8 +16,8 @@ def item():
 
     per_page = 10
 
-    headers, data = dbdata.read_data_db('SELECT * FROM item')
-
+    data = Item.query.all()
+    headers = ['Id', 'Name', 'Type', 'Unit_Price']
     total_pages, page, page_data = calc_pages(data, per_page, page)
 
     return render_template('item.html', headers=headers, total_pages=total_pages, page_data=page_data, current_page=page)
