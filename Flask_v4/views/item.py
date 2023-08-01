@@ -5,7 +5,8 @@ from flask import Blueprint, request, render_template
 from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
-from models.model import Item
+from models.model import Item, Order, OrderItem
+from sqlalchemy import func
 
 item_bp = Blueprint('item', __name__)
 dbdata = ReadData()
@@ -44,6 +45,18 @@ def item_detail(id):
     """
     month_headers, month_data = dbdata.read_data_db(query, (id, ))
 
+    # month_data = Order.query \
+    #             .join(OrderItem, Order.id == OrderItem.order_id) \
+    #             .join(Item, OrderItem.item_id == Item.id) \
+    #             .with_entities(
+    #                 func.SUBSTRING(Order.ordered_at, 1, 7).label('Month'),
+    #                 func.sum(Item.unit_price).label('TotalRevenue'),
+    #                 func.count().label('ItemCount')
+    #             ) \
+    #             .filter(Item.id == id) \
+    #             .group_by(func.SUBSTRING(Order.ordered_at, 1, 7)) \
+    #             .all()
+    # month_headers = ['Month', 'Total Revenue', 'Item Count']
     # 그래프
     rows, lables, values, values2 = dbdata.make_mixchart(query, (id, )) # row = ('2022-03', 7000, 2)
 
