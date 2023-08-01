@@ -49,7 +49,7 @@
                 </tr>
 
                 {% for d in month_data %}
-                <tr>
+                <tr onclick="window.location='?month={{ d.Month }}'" >
                     <td><a href="?month={{ d.Month }}">{{ d.Month }}</a></td>
                     <td>{{ d.Revenue }}</td>
                     <td>{{ d.Count }}</td>

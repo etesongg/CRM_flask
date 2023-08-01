@@ -1,13 +1,11 @@
 from flask import Blueprint, request, render_template
 
-from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
 from sqlalchemy import func, desc
 from models.model import Store, Order, User, OrderItem, Item
 
 store_bp = Blueprint('store', __name__)
-dbdata = ReadData()
 
 @store_bp.route('/store/')
 def store():

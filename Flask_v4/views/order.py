@@ -3,6 +3,8 @@ from flask import Blueprint, request, render_template
 from functions.read_data import ReadData
 from functions.calc_pages import calc_pages
 
+from models.model import Order, OrderItem
+
 order_bp = Blueprint('order', __name__)
 dbdata = ReadData()
 
@@ -12,7 +14,8 @@ def order():
 
     per_page = 10
 
-    headers, datas = dbdata.read_data_db("SELECT * FROM 'order'")
+    datas = Order.query.all()
+    headers = ['Id', 'Ordered_At', 'User_Id', 'Store_Id']
 
     total_pages, page, page_data = calc_pages(datas, per_page, page)
 
@@ -27,9 +30,12 @@ def order_detail(id):
     WHERE oi.order_id = ? 
     """
 
-    headers, datas =dbdata.read_data_db(query, (id, ))
+    data = OrderItem.query \
+            .join(Order, Order.id == OrderItem.order_id) \
+            .filter(OrderItem.order_id == id) \
+            .all()
+    headers = ['Id', 'Order_Id', 'Item_Id', 'Name']
+    print(data)
 
-    row = datas[0]
-
-    return render_template('order_detail.html', data=row, headers=headers)
+    return render_template('order_detail.html', data=data, headers=headers)
 
