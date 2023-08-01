@@ -1,8 +1,7 @@
 from flask import Blueprint, request, render_template
+from sqlalchemy import func, desc
 
 from functions.calc_pages import calc_pages
-
-from sqlalchemy import func, desc
 from models.model import Store, Order, User, OrderItem, Item
 
 store_bp = Blueprint('store', __name__)
@@ -33,7 +32,7 @@ def store_detail(id):
                 .with_entities(
                     User.id.label('user_id'),
                     User.name.label('name'),
-                    func.count().label("frequency")
+                    func.count().label('frequency')
                 ) \
                 .filter(Store.id == id) \
                 .group_by('user_id') \
@@ -54,10 +53,10 @@ def store_detail(id):
                     .with_entities(
                         func.SUBSTRING(Order.ordered_at, 1, 10).label('Month'),
                         func.sum(Item.unit_price).label('Revenue'),
-                        func.count().label('count')
+                        func.count().label('Count')
                     ) \
                     .filter(Store.id == id, func.SUBSTRING(Order.ordered_at, 1, 7) == month) \
-                    .group_by(func.SUBSTRING(Order.ordered_at, 1, 10)) \
+                    .group_by('Month') \
                     .order_by(desc('Month')) \
                     .all()
         month_headers = ['Month', 'Revenue', 'Count']
@@ -72,10 +71,10 @@ def store_detail(id):
                     .with_entities(
                         func.SUBSTRING(Order.ordered_at, 1, 7).label('Month'),
                         func.sum(Item.unit_price).label('Revenue'),
-                        func.count().label('count')
+                        func.count().label('Count')
                     ) \
                     .filter(Store.id == id) \
-                    .group_by(func.SUBSTRING(Order.ordered_at, 1, 7)) \
+                    .group_by('Month') \
                     .all()
         month_headers = ['Month', 'Revenue', 'Count']
 

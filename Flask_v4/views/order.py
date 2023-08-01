@@ -1,11 +1,9 @@
 from flask import Blueprint, request, render_template
 
 from functions.calc_pages import calc_pages
-
 from models.model import Order, OrderItem
 
 order_bp = Blueprint('order', __name__)
-
 
 @order_bp.route('/order/')
 def order():

@@ -1,7 +1,6 @@
 from flask import Blueprint, request, render_template
 
 from functions.calc_pages import calc_pages
-
 from models.model import OrderItem, Order, Item
 
 orderitem_bp = Blueprint('orderitem', __name__)

@@ -1,9 +1,9 @@
 from flask import Blueprint, request, render_template
+from sqlalchemy import func
 
 from functions.calc_pages import calc_pages
-
 from models.model import Item, Order, OrderItem
-from sqlalchemy import func
+
 
 item_bp = Blueprint('item', __name__)
 
@@ -40,9 +40,9 @@ def item_detail(id):
                     func.count().label('ItemCount')
                 ) \
                 .filter(Item.id == id) \
-                .group_by(func.SUBSTRING(Order.ordered_at, 1, 7)) \
+                .group_by('Month') \
                 .all()  
-    month_headers = ['Month', 'TotalRevenue', 'ItemCount']
+    month_headers = ['Month', 'Total Revenue', 'Item Count']
     
     labels = []
     values = []

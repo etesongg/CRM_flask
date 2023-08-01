@@ -1,9 +1,7 @@
 from flask import Blueprint, request, render_template
-
-from functions.calc_pages import calc_pages
-
 from sqlalchemy import case, func, desc
 
+from functions.calc_pages import calc_pages
 from models.model import User, Order, Store, OrderItem, Item
 
 
@@ -33,17 +31,18 @@ def index():
     # 연령대별 고객 수 그래프
     bar_datas = User.query \
                 .with_entities(
-                case(
-                    (User.age < 20, '10대'),
-                    (User.age.between(20, 29), '20대'),
-                    (User.age.between(30, 39), '30대'),
-                    (User.age.between(40, 49), '40대'),
-                    (User.age.between(50, 59), '50대'),
-                    (User.age >= 60, '60대 이상'),
-                    else_='기타'
-                ).label('age_group'),
-                func.count().label('age_count') \
-                ).group_by('age_group').all()
+                    case(
+                        (User.age < 20, '10대'),
+                        (User.age.between(20, 29), '20대'),
+                        (User.age.between(30, 39), '30대'),
+                        (User.age.between(40, 49), '40대'),
+                        (User.age.between(50, 59), '50대'),
+                        (User.age >= 60, '60대 이상'),
+                        else_='기타'
+                    ).label('age_group'),
+                    func.count().label('age_count')
+                ) \
+                .group_by('age_group').all()
 
     labels = []
     values = []
@@ -74,7 +73,7 @@ def user_detail(id):
                 .filter(User.id == id) \
                 .order_by(desc('PurchasedDate')) \
                 .all()
-    order_headers = ['Order_Id','PurchasedDate', 'PurchasedLocation']
+    order_headers = ['Order_Id','Purchased Date', 'Purchased Location']
 
     # 자주 방문한 매장 Top 5
     visit_stores = User.query \
