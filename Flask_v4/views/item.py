@@ -24,10 +24,14 @@ def item():
 
 @item_bp.route('/item_detail/<id>')
 def item_detail(id):
-    query = "SELECT * FROM item WHERE id = ?"
-    headers, datas = dbdata.read_data_db(query, (id, ))
-    
-    row = datas[0]
+    data = Item.query \
+            .with_entities(
+                Item.type,
+                Item.unit_price
+            ) \
+            .filter(Item.id == id) \
+            .first()
+    headers = ['Type', 'Unit_Price']
 
     # 월간 매출액
     query = """
@@ -43,4 +47,4 @@ def item_detail(id):
     # 그래프
     rows, lables, values, values2 = dbdata.make_mixchart(query, (id, )) # row = ('2022-03', 7000, 2)
 
-    return render_template('item_detail.html', user=row, headers=headers, month_headers=month_headers, month_data=month_data, rows=rows, labels=lables, values=values, values2=values2)
+    return render_template('item_detail.html', data=data, headers=headers, month_headers=month_headers, month_data=month_data, rows=rows, labels=lables, values=values, values2=values2)
