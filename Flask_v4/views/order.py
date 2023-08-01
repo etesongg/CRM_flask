@@ -23,18 +23,17 @@ def order():
 
 @order_bp.route('/order_detail/<id>')
 def order_detail(id):
-    query = """
-    SELECT o.*
-    FROM order_item oi
-    JOIN 'order' o ON o.id = oi.order_id
-    WHERE oi.order_id = ? 
-    """
-
     data = OrderItem.query \
             .join(Order, Order.id == OrderItem.order_id) \
+            .with_entities(
+                Order.id,
+                Order.ordered_at,
+                Order.user_id,
+                Order.store_id
+            ) \
             .filter(OrderItem.order_id == id) \
-            .all()
-    headers = ['Id', 'Order_Id', 'Item_Id', 'Name']
+            .first()
+    headers = ['Id', 'Ordered_At', 'User_Id', 'Store_Id']
     print(data)
 
     return render_template('order_detail.html', data=data, headers=headers)
