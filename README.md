@@ -7,10 +7,10 @@
 
 <br/>
 
-### 메인 화면
+### main
 ![main](https://github.com/etesongg/Generator/assets/55964387/ca0ef5a3-1c02-4d04-bc22-2ba76855f5c4)
 
-### user search
+### user_search
 ![user_search](https://github.com/etesongg/Generator/assets/55964387/5ae5c0e4-7fd8-4af5-9d4d-82cbea88bdf7)
 
 ### user_detail
